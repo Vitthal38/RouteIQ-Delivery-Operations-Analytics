@@ -1,0 +1,41 @@
+metric,observed_value,display_decimals,source
+total_deliveries,43648,0,v1 Page 1 KPI card
+on_time_rate_pct,76.34,2,v1 Page 1 KPI card
+breach_rate_pct,24,0,v1 Page 1 KPI card (shown as 24%; display rounding of 23.66)
+avg_delivery_minutes,124.91,2,v1 Page 1 KPI card
+breach_rate_pct_area_Semi-Urban,100,0,v1 Page 1/2 bar chart label
+breach_rate_pct_area_Metropolitian,26,0,v1 Page 1/2 bar chart label
+breach_rate_pct_area_Urban,14,0,v1 Page 1/2 bar chart label
+breach_rate_pct_area_Other,11,0,v1 Page 1/2 bar chart label
+avg_delivery_by_rating_2.5,175,0,v1 Page 3 column label
+avg_delivery_by_rating_3.0,177,0,v1 Page 3 column label
+avg_delivery_by_rating_3.5,174,0,v1 Page 3 column label
+avg_delivery_by_rating_4.0,165,0,v1 Page 3 column label
+avg_delivery_by_rating_4.5,115,0,v1 Page 3 column label
+avg_delivery_by_rating_5.0,121,0,v1 Page 3 column label
+avg_delivery_by_age_18-25,109,0,v1 Page 3 column label
+avg_delivery_by_age_26-35,128,0,v1 Page 3 column label
+avg_delivery_by_age_36-45,140,0,v1 Page 3 column label
+breach_rate_pct_weather_Fog,37,0,v1 Page 4 column label
+breach_rate_pct_weather_Cloudy,36,0,v1 Page 4 column label
+breach_rate_pct_weather_Windy,20,0,v1 Page 4 column label
+breach_rate_pct_weather_Stormy,19,0,v1 Page 4 column label
+breach_rate_pct_weather_Sandstorms,19,0,v1 Page 4 column label
+breach_rate_pct_weather_Sunny,10,0,v1 Page 4 column label
+pareto_breaches_rank_1,4877,0,v1 Page 4 Pareto label
+pareto_breaches_rank_2,2205,0,v1 Page 4 Pareto label
+pareto_breaches_rank_3,799,0,v1 Page 4 Pareto label
+pareto_breaches_rank_4,782,0,v1 Page 4 Pareto label
+pareto_breaches_rank_5,767,0,v1 Page 4 Pareto label
+pareto_breaches_rank_6,354,0,v1 Page 4 Pareto label
+pareto_breaches_rank_7,131,0,v1 Page 4 Pareto label
+pareto_breaches_rank_8,131,0,v1 Page 4 Pareto label
+pareto_breaches_rank_9,126,0,v1 Page 4 Pareto label
+pareto_breaches_rank_10,59,0,v1 Page 4 Pareto label
+pareto_breaches_rank_11,42,0,v1 Page 4 Pareto label
+pareto_breaches_rank_12,16,0,v1 Page 4 Pareto label
+pareto_breaches_rank_13,15,0,v1 Page 4 Pareto label
+pareto_breaches_rank_14,14,0,v1 Page 4 Pareto label
+pareto_breaches_rank_15,10,0,v1 Page 4 Pareto label
+pareto_cumulative_pct_rank_7,97,0,v1 Page 4 label (shows 97; running total is 96.0 - tie handling in the v1 measure)
+adverse_vs_clear_delta_minutes,25.36,2,v1 Page 4 card

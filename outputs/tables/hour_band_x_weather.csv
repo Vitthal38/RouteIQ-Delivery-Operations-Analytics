@@ -1,0 +1,43 @@
+hour_band,weather,n,breaches,breach_rate,small_sample_flag
+1_00-07 overnight,Cloudy,79,10,0.12658227848101267,True
+1_00-07 overnight,Fog,71,16,0.22535211267605634,True
+1_00-07 overnight,Sandstorms,64,0,0.0,True
+1_00-07 overnight,Stormy,76,1,0.013157894736842105,True
+1_00-07 overnight,Sunny,70,6,0.08571428571428572,True
+1_00-07 overnight,Windy,69,0,0.0,True
+2_08-10 morning,Cloudy,919,0,0.0,False
+2_08-10 morning,Fog,966,0,0.0,False
+2_08-10 morning,Sandstorms,958,13,0.013569937369519834,False
+2_08-10 morning,Stormy,1007,15,0.014895729890764648,False
+2_08-10 morning,Sunny,948,0,0.0,False
+2_08-10 morning,Windy,926,23,0.024838012958963283,False
+3_11-14 midday,Cloudy,737,165,0.22388059701492538,False
+3_11-14 midday,Fog,765,152,0.19869281045751633,False
+3_11-14 midday,Sandstorms,704,167,0.2372159090909091,False
+3_11-14 midday,Stormy,721,185,0.2565880721220527,False
+3_11-14 midday,Sunny,739,118,0.15967523680649526,False
+3_11-14 midday,Windy,736,158,0.21467391304347827,False
+4_15-16 afternoon,Cloudy,264,10,0.03787878787878788,False
+4_15-16 afternoon,Fog,284,9,0.03169014084507042,False
+4_15-16 afternoon,Sandstorms,270,40,0.14814814814814814,False
+4_15-16 afternoon,Stormy,273,37,0.13553113553113552,False
+4_15-16 afternoon,Sunny,232,1,0.004310344827586207,False
+4_15-16 afternoon,Windy,254,30,0.11811023622047244,False
+5_17-18 early evening,Cloudy,1446,636,0.43983402489626555,False
+5_17-18 early evening,Fog,1460,645,0.4417808219178082,False
+5_17-18 early evening,Sandstorms,1406,318,0.22617354196301565,False
+5_17-18 early evening,Stormy,1464,344,0.23497267759562843,False
+5_17-18 early evening,Sunny,1438,88,0.061196105702364396,False
+5_17-18 early evening,Windy,1500,353,0.23533333333333334,False
+6_19-21 evening peak,Cloudy,2275,1484,0.6523076923076923,False
+6_19-21 evening peak,Fog,2370,1581,0.6670886075949367,False
+6_19-21 evening peak,Sandstorms,2314,806,0.34831460674157305,False
+6_19-21 evening peak,Stormy,2261,789,0.3489606368863335,False
+6_19-21 evening peak,Sunny,2242,288,0.12845673505798394,False
+6_19-21 evening peak,Windy,2284,843,0.3690893169877408,False
+7_22-23 late evening,Cloudy,1568,345,0.22002551020408162,False
+7_22-23 late evening,Fog,1524,353,0.2316272965879265,False
+7_22-23 late evening,Sandstorms,1529,37,0.02419882275997384,False
+7_22-23 late evening,Stormy,1572,35,0.022264631043257,False
+7_22-23 late evening,Sunny,1409,185,0.1312987934705465,False
+7_22-23 late evening,Windy,1454,42,0.02888583218707015,False

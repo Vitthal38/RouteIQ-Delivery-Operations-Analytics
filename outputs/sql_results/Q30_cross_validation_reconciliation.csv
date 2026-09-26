@@ -1,0 +1,15 @@
+id,check_name,expected,actual,status
+1,"total deliveries = 43,648 (frozen cleaned row count)",43648.0,43648.0,PASS
+2,distinct order_id = total deliveries (no duplicates),43648.0,43648.0,PASS
+3,view rows = FactDelivery rows (no join fan-out),43648.0,43648.0,PASS
+4,"total breaches = 10,328 (frozen)",10328.0,10328.0,PASS
+5,recomputed breach_flag vs stored sla_breach_flag: mismatches = 0,0.0,0.0,PASS
+6,stored category threshold vs fresh PERCENTILE_CONT(0.75): mismatches = 0,0.0,0.0,PASS
+7,every category has exactly one threshold,16.0,16.0,PASS
+8,sum of breaches by traffic = total,10328.0,10328.0,PASS
+9,sum of breaches by order hour = total,10328.0,10328.0,PASS
+10,on-time % + breach % = 100,100.0,100.0,PASS
+11,"valid ratings = 43,594 (54 rows have none)",43594.0,43594.0,PASS
+12,"Semi-Urban: 152 deliveries, all breach",152.0,152.0,PASS
+13,"model population (Q29 filter) = 43,442 rows",43442.0,43442.0,PASS
+14,peak-hour flag = hours 17-23 only,0.0,0.0,PASS

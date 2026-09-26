@@ -1,0 +1,2 @@
+rows,events,sum_y,sum_traffic_high,sum_traffic_jam,sum_traffic_medium,sum_weather_cloudy,sum_weather_fog,sum_weather_sandstorms,sum_weather_stormy,sum_weather_windy,sum_area_other,sum_area_urban,sum_vehicle_scooter,sum_vehicle_van,sum_rating_lt_4_5,sum_age_ge_30,sum_prep_per_5min
+43442,10165,10165.0,4278.0,13584.0,10604.0,7236.0,7404.0,7219.0,7346.0,7189.0,1135.0,9715.0,14581.0,3515.0,7962.0,21866.0,86804.0

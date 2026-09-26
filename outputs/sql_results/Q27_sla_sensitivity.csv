@@ -1,0 +1,49 @@
+percentile,cut,level,n,breaches,breach_rate_pct
+0.7,area,Metropolitian,32634,10523,32.2455
+0.7,area,Other,1136,174,15.3169
+0.7,area,Semi-Urban,152,152,100.0
+0.7,area,Urban,9726,1728,17.7668
+0.7,overall,all,43648,12577,28.8146
+0.7,rating_group,no rating,54,11,20.3704
+0.7,rating_group,rating < 4.5,8024,6535,81.4432
+0.7,rating_group,rating >= 4.5,35570,6031,16.9553
+0.7,traffic,High,4296,1353,31.4944
+0.7,traffic,Jam,13725,6761,49.2605
+0.7,traffic,Low,14999,1143,7.6205
+0.7,traffic,Medium,10628,3320,31.2382
+0.75,area,Metropolitian,32634,8648,26.5
+0.75,area,Other,1136,130,11.4437
+0.75,area,Semi-Urban,152,152,100.0
+0.75,area,Urban,9726,1398,14.3738
+0.75,overall,all,43648,10328,23.662
+0.75,rating_group,no rating,54,11,20.3704
+0.75,rating_group,rating < 4.5,8024,5185,64.6186
+0.75,rating_group,rating >= 4.5,35570,5132,14.4279
+0.75,traffic,High,4296,961,22.3696
+0.75,traffic,Jam,13725,5844,42.5792
+0.75,traffic,Low,14999,912,6.0804
+0.75,traffic,Medium,10628,2611,24.5672
+0.8,area,Metropolitian,32634,6977,21.3795
+0.8,area,Other,1136,93,8.1866
+0.8,area,Semi-Urban,152,152,100.0
+0.8,area,Urban,9726,1088,11.1865
+0.8,overall,all,43648,8310,19.0387
+0.8,rating_group,no rating,54,8,14.8148
+0.8,rating_group,rating < 4.5,8024,4012,50.0
+0.8,rating_group,rating >= 4.5,35570,4290,12.0607
+0.8,traffic,High,4296,607,14.1294
+0.8,traffic,Jam,13725,5005,36.4663
+0.8,traffic,Low,14999,713,4.7537
+0.8,traffic,Medium,10628,1985,18.6771
+0.9,area,Metropolitian,32634,3330,10.2041
+0.9,area,Other,1136,35,3.081
+0.9,area,Semi-Urban,152,152,100.0
+0.9,area,Urban,9726,483,4.9661
+0.9,overall,all,43648,4000,9.1642
+0.9,rating_group,no rating,54,3,5.5556
+0.9,rating_group,rating < 4.5,8024,1700,21.1864
+0.9,rating_group,rating >= 4.5,35570,2297,6.4577
+0.9,traffic,High,4296,273,6.3547
+0.9,traffic,Jam,13725,2829,20.612
+0.9,traffic,Low,14999,227,1.5134
+0.9,traffic,Medium,10628,671,6.3135

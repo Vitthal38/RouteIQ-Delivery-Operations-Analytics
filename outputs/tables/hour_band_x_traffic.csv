@@ -1,0 +1,12 @@
+hour_band,traffic,n,breaches,breach_rate,small_sample_flag
+1_00-07 overnight,Low,429,33,0.07692307692307693,False
+2_08-10 morning,Low,5724,51,0.00890985324947589,False
+3_11-14 midday,High,4210,943,0.22399049881235156,False
+3_11-14 midday,Low,192,2,0.010416666666666666,True
+4_15-16 afternoon,High,86,18,0.20930232558139536,True
+4_15-16 afternoon,Medium,1491,109,0.07310529845741114,False
+5_17-18 early evening,Medium,8714,2384,0.27358274041771863,False
+6_19-21 evening peak,Jam,13323,5673,0.4258049988741274,False
+6_19-21 evening peak,Medium,423,118,0.2789598108747045,False
+7_22-23 late evening,Jam,402,171,0.4253731343283582,False
+7_22-23 late evening,Low,8654,826,0.09544719204991911,False

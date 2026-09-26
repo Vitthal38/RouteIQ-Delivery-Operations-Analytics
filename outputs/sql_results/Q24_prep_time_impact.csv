@@ -1,0 +1,28 @@
+cut,prep_time_minutes,traffic,area,n,breaches,breach_rate_pct,avg_delivery_minutes
+prep,5,,,14617,3476,23.7805,125.36
+prep,10,,,14490,3466,23.9199,125.2
+prep,15,,,14541,3386,23.2859,124.18
+prep x area,5,,Metropolitian,10972,2913,26.5494,130.04
+prep x area,5,,Other,368,48,13.0435,106.18
+prep x area,5,,Semi-Urban,49,49,100.0,242.61
+prep x area,5,,Urban,3228,466,14.4362,109.88
+prep x area,10,,Metropolitian,10844,2914,26.872,130.19
+prep x area,10,,Other,376,40,10.6383,101.47
+prep x area,10,,Semi-Urban,52,52,100.0,237.4
+prep x area,10,,Urban,3218,460,14.2946,109.34
+prep x area,15,,Metropolitian,10818,2821,26.0769,128.89
+prep x area,15,,Other,392,42,10.7143,105.83
+prep x area,15,,Semi-Urban,51,51,100.0,235.82
+prep x area,15,,Urban,3280,472,14.3902,109.11
+prep x traffic,5,High,,1473,325,22.0638,128.43
+prep x traffic,5,Jam,,4587,1964,42.8167,149.48
+prep x traffic,5,Low,,5025,293,5.8308,101.42
+prep x traffic,5,Medium,,3532,894,25.3114,126.82
+prep x traffic,10,High,,1396,315,22.5645,129.9
+prep x traffic,10,Jam,,4610,1949,42.2777,146.71
+prep x traffic,10,Low,,4940,307,6.2146,102.08
+prep x traffic,10,Medium,,3544,895,25.254,127.59
+prep x traffic,15,High,,1427,321,22.4947,129.98
+prep x traffic,15,Jam,,4528,1931,42.6458,147.08
+prep x traffic,15,Low,,5034,312,6.1979,100.58
+prep x traffic,15,Medium,,3552,822,23.1419,126.11

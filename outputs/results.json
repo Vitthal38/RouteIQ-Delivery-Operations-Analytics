@@ -1,0 +1,471 @@
+{
+  "kpis": {
+    "total_deliveries": 43648,
+    "breached_deliveries": 10328,
+    "breach_rate_pct": 23.662023460410555,
+    "on_time_rate_pct": 76.33797653958945,
+    "average_delivery_minutes": 124.91447489002933,
+    "median_delivery_minutes": 125.0,
+    "p90_delivery_minutes": 195.0,
+    "p75_delivery_minutes": 160.0,
+    "average_minutes_over_sla_when_breached": 34.23276529821843
+  },
+  "associations": [
+    {
+      "chi2": 5294.721709492987,
+      "dof": 3,
+      "p_value": 0.0,
+      "cramers_v": 0.3482887085489282,
+      "cramers_v_bias_corrected": 0.34819401053819243,
+      "n": 43648,
+      "variable": "traffic",
+      "effect_band": "medium"
+    },
+    {
+      "chi2": 2375.8467619041844,
+      "dof": 5,
+      "p_value": 0.0,
+      "cramers_v": 0.23330660749496718,
+      "cramers_v_bias_corrected": 0.2330636440753622,
+      "n": 43648,
+      "variable": "weather",
+      "effect_band": "small"
+    },
+    {
+      "chi2": 1194.2941053940276,
+      "dof": 3,
+      "p_value": 1.2682037128208322e-258,
+      "cramers_v": 0.16541445945575795,
+      "cramers_v_bias_corrected": 0.16520846068550685,
+      "n": 43648,
+      "variable": "area",
+      "effect_band": "small"
+    },
+    {
+      "chi2": 558.1231225758853,
+      "dof": 2,
+      "p_value": 6.384160860845509e-122,
+      "cramers_v": 0.11307922760572103,
+      "cramers_v_bias_corrected": 0.11287772796509711,
+      "n": 43648,
+      "variable": "vehicle",
+      "effect_band": "small"
+    },
+    {
+      "chi2": 5391.80029577767,
+      "dof": 6,
+      "p_value": 0.0,
+      "cramers_v": 0.35146713787375655,
+      "cramers_v_bias_corrected": 0.35127554656475457,
+      "n": 43648,
+      "variable": "hour_band",
+      "effect_band": "medium"
+    },
+    {
+      "chi2": 0.026129951584835307,
+      "dof": 1,
+      "p_value": 0.8715833586570044,
+      "cramers_v": 0.0007737258881665634,
+      "cramers_v_bias_corrected": 0.0,
+      "n": 43648,
+      "variable": "is_weekend",
+      "effect_band": "negligible"
+    },
+    {
+      "chi2": 1.7862394760117815,
+      "dof": 2,
+      "p_value": 0.4093766107246116,
+      "cramers_v": 0.00639716669009235,
+      "cramers_v_bias_corrected": 0.0,
+      "n": 43648,
+      "variable": "prep_time_minutes",
+      "effect_band": "negligible"
+    }
+  ],
+  "traffic_hour_identifiability": {
+    "share_of_deliveries_matching_hours_modal_traffic": 0.9747296554252199,
+    "hours_observed": 17,
+    "hours_with_more_than_one_traffic_level": 4,
+    "boundary_hours": [
+      11,
+      15,
+      19,
+      22
+    ],
+    "deliveries_in_boundary_hours": 11958,
+    "jam_first_hour": 19,
+    "jam_last_hour": 22
+  },
+  "peak": {
+    "peak_share_of_deliveries": 0.7220491202346041,
+    "peak_share_of_breaches": 0.8880712625871418,
+    "peak_breach_rate": 0.29102678004822946,
+    "offpeak_breach_rate": 0.09528519617540389
+  },
+  "evening_peak_19_21": {
+    "share_of_deliveries": 0.3149285190615836,
+    "share_of_breaches": 0.560708752904725,
+    "breach_rate": 0.42128619234686454
+  },
+  "prep_tests": {
+    "cramers_v_breach_vs_prep": 0.00639716669009235,
+    "chi2_p_value": 0.4093766107246116,
+    "kruskal_H": 3.5266481537993184,
+    "kruskal_p": 0.17147392291696673,
+    "epsilon_squared_delivery_time": 3.497876397753049e-05,
+    "cohens_d_15_vs_5min": -0.022834121104857993,
+    "cohens_d_ci_low": -0.04579110597834142,
+    "cohens_d_ci_high": 0.00012286376862543497,
+    "spearman_rho_prep_vs_delivery": -0.008031773379814143,
+    "spearman_p": 0.09334994231487914,
+    "prep_uniform_gof_chi2": 0.5614461143695014,
+    "prep_uniform_gof_p": 0.7552374641100279,
+    "prep_share_5": 0.3348836143695015,
+    "prep_share_10": 0.3319739736070381,
+    "prep_share_15": 0.3331424120234604
+  },
+  "rating": {
+    "best_cut": 4.5,
+    "stratified_by_traffic_x_area": {
+      "exposure": "rating_lt_4_5",
+      "strata": "traffic x area",
+      "n_strata": 12,
+      "crude_risk_ratio": 4.527755350409486,
+      "crude_rr_ci_low": 4.392411774233856,
+      "crude_rr_ci_high": 4.667269274119349,
+      "mh_risk_ratio": 3.6900914677426164,
+      "mh_rr_ci_low": 3.591669019443117,
+      "mh_rr_ci_high": 3.7912109848078703,
+      "mh_odds_ratio": 12.62853923141838,
+      "mh_or_ci_low": 11.831380584655339,
+      "mh_or_ci_high": 13.479407747757694
+    },
+    "stratified_by_traffic_x_weather": {
+      "exposure": "rating_lt_4_5",
+      "strata": "traffic x weather",
+      "n_strata": 24,
+      "crude_risk_ratio": 4.527755350409486,
+      "crude_rr_ci_low": 4.392411774233856,
+      "crude_rr_ci_high": 4.667269274119349,
+      "mh_risk_ratio": 3.622623832740639,
+      "mh_rr_ci_low": 3.5283496321694354,
+      "mh_rr_ci_high": 3.7194169517354325,
+      "mh_odds_ratio": 13.33338453855448,
+      "mh_or_ci_low": 12.427428248309733,
+      "mh_or_ci_high": 14.30538480696065
+    },
+    "n_low": 8024,
+    "share_of_deliveries_low": 0.18406202688443363,
+    "share_of_breaches_low": 0.5020333075135553,
+    "breach_rate_low": 0.6461864406779662,
+    "breach_rate_high": 0.1442788867022772
+  },
+  "age": {
+    "best_cut": 30.0,
+    "stratified_by_traffic_x_area": {
+      "exposure": "age_ge_30",
+      "strata": "traffic x area",
+      "n_strata": 12,
+      "crude_risk_ratio": 2.3414551361314797,
+      "crude_rr_ci_low": 2.2537769726242356,
+      "crude_rr_ci_high": 2.4325442229241148,
+      "mh_risk_ratio": 2.2830134819763237,
+      "mh_rr_ci_low": 2.2025657837409294,
+      "mh_rr_ci_high": 2.3663994952437353,
+      "mh_odds_ratio": 3.434224134441836,
+      "mh_or_ci_low": 3.260814102384025,
+      "mh_or_ci_high": 3.616856108712269
+    },
+    "stratified_by_traffic_x_weather": {
+      "exposure": "age_ge_30",
+      "strata": "traffic x weather",
+      "n_strata": 24,
+      "crude_risk_ratio": 2.3414551361314797,
+      "crude_rr_ci_low": 2.2537769726242356,
+      "crude_rr_ci_high": 2.4325442229241148,
+      "mh_risk_ratio": 2.3830202924261323,
+      "mh_rr_ci_low": 2.300497148493418,
+      "mh_rr_ci_high": 2.4685036961831197,
+      "mh_odds_ratio": 3.989396310674992,
+      "mh_or_ci_low": 3.7759780704943364,
+      "mh_or_ci_high": 4.214876947509303
+    }
+  },
+  "driver_model": {
+    "info": {
+      "n_total": 43648,
+      "excluded_semi_urban": 152,
+      "excluded_missing_rating": 54,
+      "excluded_both": 0,
+      "n_model": 43442,
+      "n_events": 10165,
+      "event_rate": 0.23399014778325122
+    },
+    "holdout": {
+      "A": {
+        "n_train": 30409,
+        "n_test": 13033,
+        "test_at_0_5": {
+          "auc": 0.9016368810584551,
+          "brier": 0.10507557435428849,
+          "log_loss": 0.33286802313221664,
+          "threshold": 0.5,
+          "accuracy": 0.8532187523977596,
+          "sensitivity": 0.5963934426229508,
+          "specificity": 0.9316838625663628,
+          "precision": 0.7273090763694522,
+          "baseline_accuracy_majority": 0.7659786695311901
+        },
+        "test_at_youden": {
+          "auc": 0.9016368810584551,
+          "brier": 0.10507557435428849,
+          "log_loss": 0.33286802313221664,
+          "threshold": 0.25889166757413423,
+          "accuracy": 0.8295097061305916,
+          "sensitivity": 0.8144262295081968,
+          "specificity": 0.8341180006010217,
+          "precision": 0.6,
+          "baseline_accuracy_majority": 0.7659786695311901
+        },
+        "train_auc": 0.9051703179275624
+      },
+      "B": {
+        "n_train": 30409,
+        "n_test": 13033,
+        "test_at_0_5": {
+          "auc": 0.9084530751457807,
+          "brier": 0.10238524801829565,
+          "log_loss": 0.3232490235047115,
+          "threshold": 0.5,
+          "accuracy": 0.8573620808716336,
+          "sensitivity": 0.6075409836065574,
+          "specificity": 0.9336872683562055,
+          "precision": 0.736779324055666,
+          "baseline_accuracy_majority": 0.7659786695311901
+        },
+        "test_at_youden": {
+          "auc": 0.9084530751457807,
+          "brier": 0.10238524801829565,
+          "log_loss": 0.3232490235047115,
+          "threshold": 0.24359083960710837,
+          "accuracy": 0.8386403744341288,
+          "sensitivity": 0.8157377049180328,
+          "specificity": 0.8456375838926175,
+          "precision": 0.6175229585505088,
+          "baseline_accuracy_majority": 0.7659786695311901
+        },
+        "train_auc": 0.9118500380211252
+      },
+      "C": {
+        "n_train": 30409,
+        "n_test": 13033,
+        "test_at_0_5": {
+          "auc": 0.915506065228922,
+          "brier": 0.10062855845840321,
+          "log_loss": 0.3174674223159099,
+          "threshold": 0.5,
+          "accuracy": 0.8580526356172792,
+          "sensitivity": 0.6449180327868852,
+          "specificity": 0.9231693879595312,
+          "precision": 0.7194586686174104,
+          "baseline_accuracy_majority": 0.7659786695311901
+        },
+        "test_at_youden": {
+          "auc": 0.915506065228922,
+          "brier": 0.10062855845840321,
+          "log_loss": 0.3174674223159099,
+          "threshold": 0.1885257330577889,
+          "accuracy": 0.8325788383334612,
+          "sensitivity": 0.8727868852459016,
+          "specificity": 0.8202945006511069,
+          "precision": 0.5973967684021544,
+          "baseline_accuracy_majority": 0.7659786695311901
+        },
+        "train_auc": 0.9184732166620077
+      }
+    },
+    "lr_tests": {
+      "A_vs_B_adds_hour_band": {
+        "chi2": 846.9234856748335,
+        "df": 6,
+        "p_value": 1.1157099580322245e-179,
+        "delta_aic": -834.9234856748335,
+        "delta_bic": -782.8483937104502
+      },
+      "A_vs_C_adds_traffic_x_weather": {
+        "chi2": 1301.406417230497,
+        "df": 15,
+        "p_value": 2.6448239943908037e-268,
+        "delta_aic": -1271.406417230497,
+        "delta_bic": -1141.2186873195424
+      }
+    },
+    "influence": {
+      "max_cooks_d": 0.0011907159187336228,
+      "n_above_4_over_n": 3521,
+      "max_leverage": 0.004748423590044922,
+      "mean_leverage": 0.00036830716817826115,
+      "refit_dropping_top_0_5pct_cooks": {
+        "n_dropped": 217,
+        "max_abs_log_or_change": 0.703574359089849
+      }
+    },
+    "class_balance": {
+      "events": 10165,
+      "non_events": 33277,
+      "event_rate": 0.23399014778325122,
+      "note": "Event rate ~24%: no resampling needed; AUC/Brier/log-loss used instead of accuracy alone."
+    },
+    "robustness_grocery_flag": {
+      "odds_ratio_multiplier_vs_A": {
+        "const": 1.0070561363644372,
+        "traffic[High]": 1.0007038840975864,
+        "traffic[Jam]": 1.0015727596576167,
+        "traffic[Medium]": 1.0007711003207451,
+        "weather[Cloudy]": 0.9988268469369264,
+        "weather[Fog]": 1.001244123970931,
+        "weather[Sandstorms]": 0.9991726116685882,
+        "weather[Stormy]": 0.9991911808063778,
+        "weather[Windy]": 1.000347736172286,
+        "area[Other]": 0.9998261193137674,
+        "area[Urban]": 0.9993783963993685,
+        "vehicle[scooter]": 0.9991332678928762,
+        "vehicle[van]": 0.9995246101139362,
+        "rating_lt_4_5": 1.000813717701589,
+        "age_ge_30": 1.0001671183769403,
+        "prep_per_5min": 1.0001593749243147
+      },
+      "max_abs_pct_change": 0.7056136364437249
+    },
+    "odds_ratios_A": {
+      "const": {
+        "odds_ratio": 0.00556030869998602,
+        "ci_low": 0.004761661812872547,
+        "ci_high": 0.006492908159827721
+      },
+      "traffic[High]": {
+        "odds_ratio": 6.409896899114294,
+        "ci_low": 5.687489104406762,
+        "ci_high": 7.224062763555946
+      },
+      "traffic[Jam]": {
+        "odds_ratio": 21.254694524641234,
+        "ci_low": 19.349979997230786,
+        "ci_high": 23.34689955237507
+      },
+      "traffic[Medium]": {
+        "odds_ratio": 8.650769646503392,
+        "ci_low": 7.848637618514681,
+        "ci_high": 9.53487969686983
+      },
+      "weather[Cloudy]": {
+        "odds_ratio": 8.070385477992685,
+        "ci_low": 7.2024153713063725,
+        "ci_high": 9.042955509462894
+      },
+      "weather[Fog]": {
+        "odds_ratio": 8.675675820631986,
+        "ci_low": 7.7452882626034585,
+        "ci_high": 9.717824358857177
+      },
+      "weather[Sandstorms]": {
+        "odds_ratio": 1.5493437102646792,
+        "ci_low": 1.3695921909754334,
+        "ci_high": 1.7526866379305894
+      },
+      "weather[Stormy]": {
+        "odds_ratio": 1.6529758790780777,
+        "ci_low": 1.4625049642679693,
+        "ci_high": 1.8682529793542015
+      },
+      "weather[Windy]": {
+        "odds_ratio": 1.8128070515538595,
+        "ci_low": 1.6050874662858832,
+        "ci_high": 2.0474083034039947
+      },
+      "area[Other]": {
+        "odds_ratio": 0.46349239499755374,
+        "ci_low": 0.366361426048749,
+        "ci_high": 0.586375051919312
+      },
+      "area[Urban]": {
+        "odds_ratio": 0.6156552041837662,
+        "ci_low": 0.5686556561591736,
+        "ci_high": 0.6665392779148924
+      },
+      "vehicle[scooter]": {
+        "odds_ratio": 0.4192252919382045,
+        "ci_low": 0.391232463497446,
+        "ci_high": 0.4492210176771798
+      },
+      "vehicle[van]": {
+        "odds_ratio": 0.36894328529669956,
+        "ci_low": 0.32589243123698997,
+        "ci_high": 0.4176812184586625
+      },
+      "rating_lt_4_5": {
+        "odds_ratio": 14.961804556057468,
+        "ci_low": 13.9143202242919,
+        "ci_high": 16.0881445852346
+      },
+      "age_ge_30": {
+        "odds_ratio": 3.013482079745828,
+        "ci_low": 2.8318057373695114,
+        "ci_high": 3.2068139862534246
+      },
+      "prep_per_5min": {
+        "odds_ratio": 0.9950102000323884,
+        "ci_low": 0.9597237706815538,
+        "ci_high": 1.0315940152919278
+      }
+    }
+  },
+  "sla_sensitivity": {
+    "overall": [
+      {
+        "percentile": 0.7,
+        "breached_deliveries": 12577,
+        "breach_rate_pct": 28.814607771261,
+        "on_time_rate_pct": 71.185392228739,
+        "expected_breach_rate_if_no_ties_pct": 30.000000000000004
+      },
+      {
+        "percentile": 0.75,
+        "breached_deliveries": 10328,
+        "breach_rate_pct": 23.66202346041056,
+        "on_time_rate_pct": 76.33797653958945,
+        "expected_breach_rate_if_no_ties_pct": 25.0
+      },
+      {
+        "percentile": 0.8,
+        "breached_deliveries": 8310,
+        "breach_rate_pct": 19.03867302052786,
+        "on_time_rate_pct": 80.96132697947213,
+        "expected_breach_rate_if_no_ties_pct": 19.999999999999996
+      },
+      {
+        "percentile": 0.9,
+        "breached_deliveries": 4000,
+        "breach_rate_pct": 9.164222873900293,
+        "on_time_rate_pct": 90.8357771260997,
+        "expected_breach_rate_if_no_ties_pct": 9.999999999999998
+      }
+    ]
+  },
+  "data_realism": {
+    "ols_r2_additive_rules": 0.6187875581995663,
+    "ols_resid_sd_minutes": 32.06985636570704,
+    "weather_coef_fog_vs_cloudy": 0.22797330311863181,
+    "weather_coefs_sandstorms_stormy_windy": [
+      -15.690125527883598,
+      -15.63180221625124,
+      -15.255599882291985
+    ],
+    "weather_mid_tier_spread_minutes": 0.4345256455916129,
+    "weather_gap_between_tiers_minutes": 14.676508288721328,
+    "coef_semi_urban_minutes": 70.95946764115288,
+    "coef_grocery_minutes": -105.17042979867898,
+    "coef_low_rating_minutes": 37.413073034626485,
+    "coef_age_ge_30_minutes": 24.74446404422655
+  }
+}

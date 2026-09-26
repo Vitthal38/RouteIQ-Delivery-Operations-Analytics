@@ -1,0 +1,26 @@
+hour_band,area,n,breaches,breach_rate,small_sample_flag
+1_00-07 overnight,Metropolitian,298,29,0.09731543624161074,False
+1_00-07 overnight,Other,15,1,0.06666666666666667,True
+1_00-07 overnight,Urban,116,3,0.02586206896551724,True
+2_08-10 morning,Metropolitian,3890,41,0.010539845758354757,False
+2_08-10 morning,Other,176,1,0.005681818181818182,True
+2_08-10 morning,Urban,1658,9,0.005428226779252111,False
+3_11-14 midday,Metropolitian,3337,788,0.23614024572969733,False
+3_11-14 midday,Other,104,15,0.14423076923076922,True
+3_11-14 midday,Semi-Urban,16,16,1.0,True
+3_11-14 midday,Urban,945,126,0.13333333333333333,False
+4_15-16 afternoon,Metropolitian,1108,104,0.09386281588447654,False
+4_15-16 afternoon,Other,42,2,0.047619047619047616,True
+4_15-16 afternoon,Urban,427,21,0.04918032786885246,False
+5_17-18 early evening,Metropolitian,6699,2014,0.3006418868487834,False
+5_17-18 early evening,Other,203,39,0.1921182266009852,False
+5_17-18 early evening,Semi-Urban,10,10,1.0,True
+5_17-18 early evening,Urban,1802,321,0.1781354051054384,False
+6_19-21 evening peak,Metropolitian,10797,4841,0.4483652866537001,False
+6_19-21 evening peak,Other,276,57,0.20652173913043478,False
+6_19-21 evening peak,Semi-Urban,125,125,1.0,True
+6_19-21 evening peak,Urban,2548,768,0.30141287284144425,False
+7_22-23 late evening,Metropolitian,6505,831,0.1277478862413528,False
+7_22-23 late evening,Other,320,15,0.046875,False
+7_22-23 late evening,Semi-Urban,1,1,1.0,True
+7_22-23 late evening,Urban,2230,150,0.06726457399103139,False

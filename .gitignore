@@ -2,16 +2,17 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.pytest_cache/
 
 # Run logs (regenerated on every execution)
 logs/
 
-# Local tooling config
+# Local tooling config and scratch
 .claude/
+/output/
+/route iq.pbix
 
-# Unrelated to RouteIQ (a different project's report)
-output/dashboards customer retention and churn analysis.pbix
-
-# Raw source data: not redistributed (download from Kaggle; see README)
+# Raw source data: not redistributed (download from Kaggle; see data/README.md)
 /amazon_delivery.csv
-/data/raw/
+/data/raw/*
+!/data/raw/README.md

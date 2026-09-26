@@ -1,0 +1,17 @@
+segment,rating_group,age_group,traffic,n,breaches,breach_rate_pct,share_of_breaches_pct,cumulative_share_pct,small_sample_flag
+rating < 4.5 | age >= 30 | Jam,rating < 4.5,age >= 30,Jam,2486,2060,82.864,19.967,19.967,False
+rating >= 4.5 | age >= 30 | Jam,rating >= 4.5,age >= 30,Jam,4424,1874,42.3599,18.1642,38.1312,False
+rating >= 4.5 | age < 30 | Jam,rating >= 4.5,age < 30,Jam,5847,1178,20.1471,11.418,49.5493,False
+rating >= 4.5 | age >= 30 | Medium,rating >= 4.5,age >= 30,Medium,4042,962,23.8001,9.3244,58.8737,False
+rating < 4.5 | age >= 30 | Medium,rating < 4.5,age >= 30,Medium,1287,943,73.2712,9.1403,68.014,False
+rating < 4.5 | age < 30 | Jam,rating < 4.5,age < 30,Jam,953,726,76.1805,7.0369,75.0509,False
+rating < 4.5 | age >= 30 | Low,rating < 4.5,age >= 30,Low,1298,537,41.3713,5.205,80.2559,False
+rating >= 4.5 | age < 30 | Medium,rating >= 4.5,age < 30,Medium,4950,469,9.4747,4.5459,84.8018,False
+rating >= 4.5 | age >= 30 | High,rating >= 4.5,age >= 30,High,1666,355,21.3085,3.4409,88.2427,False
+rating < 4.5 | age >= 30 | High,rating < 4.5,age >= 30,High,516,331,64.1473,3.2083,91.451,False
+rating < 4.5 | age < 30 | Medium,rating < 4.5,age < 30,Medium,335,232,69.2537,2.2487,93.6997,False
+rating >= 4.5 | age >= 30 | Low,rating >= 4.5,age >= 30,Low,6267,207,3.303,2.0064,95.7061,False
+rating < 4.5 | age < 30 | High,rating < 4.5,age < 30,High,244,188,77.0492,1.8222,97.5284,False
+rating < 4.5 | age < 30 | Low,rating < 4.5,age < 30,Low,905,168,18.5635,1.6284,99.1567,False
+rating >= 4.5 | age < 30 | High,rating >= 4.5,age < 30,High,1868,87,4.6574,0.8433,100.0,False
+rating >= 4.5 | age < 30 | Low,rating >= 4.5,age < 30,Low,6506,0,0.0,0.0,100.0,False

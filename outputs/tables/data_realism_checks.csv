@@ -1,0 +1,11 @@
+check,observed,expected_if_real_operational_data,evidence_of_rule_based_construction,note
+Delivery times that are multiples of 5 minutes,95.0% (89 distinct values),about 20% (timestamps measured to the minute),strong,"Present in the RAW file too, so it is not an artefact of cleaning."
+Preparation time values,"only [5, 10, 15]; shares 33.5%, 33.2%, 33.3% (uniform-fit p=0.76)","a continuous, right-skewed distribution",strong,Prep time has no association with breach or delivery time (see docs).
+Traffic level determined by order hour,97.5% of deliveries match their hour's most common traffic level; Jam only in hours 19-22; 4 of 17 hours have >1 level,"traffic varies within an hour (incidents, routes, weekdays)",strong,"Traffic and time of day are nearly the same variable here, so they cannot be cleanly separated."
+Hourly order volume,"no orders 01-07h; evening plateau 17-23h CV=0.03 (min 4247, max 4663)",smooth demand curve with peaks,moderate,
+Breach rate step at agent age 30,14.1% (age<30) vs 33.1% (age>=30); 29->30 jump 17.5 pts vs year-to-year SD 0.4 pts,"gradual change with age, not a cliff at a round number",strong,
+Breach rate step at agent rating 4.5,"4.4 -> 63.2%, 4.5 -> 10.5% (drop 52.7 pts)",gradual change with rating,strong,"Below 4.5 the breach rate is flat around 60-90%: a step, not a slope."
+Weather effects collapse into three tiers,Sandstorms/Stormy/Windy coefficients differ by only 0.4 min; Fog vs Cloudy +0.2 min; Sunny vs the mid tier 14.7 min,each weather type has its own effect,strong,
+A handful of additive rules explain delivery time,"OLS R2 = 0.62 using traffic, weather, area, vehicle, rating<4.5, age>=30, grocery",much lower explanatory power from coarse categories alone,moderate,
+Semi-Urban area,"n=152, 100% breach, 83% in Jam traffic, delivery time 245 min median",some variation; a perfect 100% is rare,strong,
+Raw file formatting and range defects,53 ratings of 6.0 (scale is 1-5); 3505 zero coordinates; 96% of Traffic/Vehicle/Area values padded with trailing spaces,"some defects, but rarely this systematic",weak,Zero coordinates and stray spaces also occur in real exports; only weak evidence on its own.
