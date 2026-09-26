@@ -1,0 +1,221 @@
+// =============================================================================
+// RouteIQ — DAX Measure Library
+// Generated: 2026-08-16
+//
+// Source of truth: DAX_MEASURE_PLAN.md. Every measure below either
+// implements a measure literally named in that document, or is a
+// foundational/supporting measure this task's own instructions explicitly
+// requested (Total Deliveries, SLA Breaches, Average Preparation Time,
+// Average Distance) — none of these four is a new business KPI; each is a
+// direct COUNT/AVERAGE of an already-approved FactDelivery column, and
+// each is labeled below as "supporting", not a DAX_MEASURE_PLAN.md page
+// measure, to avoid implying it is part of the documented dashboard scope.
+//
+// Ready to paste into Power BI Desktop's measure editor against the model
+// described in dax/model_relationships.md. Not executed in a live Tabular
+// engine (none is available in this environment) — every measure's LOGIC
+// is instead validated by SQL equivalence in reports/dax_validation.md.
+//
+// FROZEN SLA RULE — enforced in every measure below that touches it:
+// reads FactDelivery[sla_breach_flag] / [sla_threshold_minutes] as stored.
+// No measure computes a percentile, a median, a buffer, or a different
+// boundary rule. (SLA_METHODOLOGY.md — frozen, unchanged.)
+//
+// AGENT LIMITATION — enforced in every Agent-related measure: DimAgent is
+// attribute-derived (agent_age / agent_rating only). No measure ranks,
+// names, or singles out an "agent" as an individual — only rating/age
+// bands and their aggregate statistics. (STAR_SCHEMA.md.)
+// =============================================================================
+
+
+// -----------------------------------------------------------------------
+// FOUNDATIONAL / SUPPORTING MEASURES
+// (not individually named in DAX_MEASURE_PLAN.md — building blocks every
+// rate measure below depends on, plus two simple column averages this
+// task's instructions explicitly asked to validate)
+// -----------------------------------------------------------------------
+
+Total Deliveries :=
+COUNTROWS ( FactDelivery )
+
+SLA Breaches :=
+CALCULATE (
+    COUNTROWS ( FactDelivery ),
+    FactDelivery[sla_breach_flag] = TRUE
+)
+
+// Supporting only — not a DAX_MEASURE_PLAN.md page measure. AVERAGE()
+// ignores blank prep_time_minutes (there are none — every row has a
+// value per FEATURE_ENGINEERING.md #8), included here because the task's
+// own "at minimum" validation list names it explicitly.
+Average Preparation Time (mins) :=
+AVERAGE ( FactDelivery[prep_time_minutes] )
+
+// Supporting only — not a DAX_MEASURE_PLAN.md page measure. AVERAGE()
+// automatically ignores the blank/NULL distance_km values that exist for
+// coordinate-invalid rows (FEATURE_ENGINEERING.md #1 edge case) — no
+// extra filter is needed for that exclusion to happen correctly.
+Average Distance (km) :=
+AVERAGE ( FactDelivery[distance_km] )
+
+
+// -----------------------------------------------------------------------
+// EXECUTIVE SUMMARY PAGE (DAX_MEASURE_PLAN.md)
+// -----------------------------------------------------------------------
+
+// KPI_DEFINITIONS.md #1. Evaluates over whatever filter context the
+// visual/slicer applies — deliberately built from COUNTROWS + CALCULATE,
+// not a row-context iterator, so it cannot silently resolve at a
+// different grain than the visual implies (the FoodPulse-class bug
+// DAX_MEASURE_PLAN.md's "Known DAX Risk Areas" section warns about).
+On-Time Delivery Rate % :=
+VAR OnTimeCount =
+    CALCULATE ( COUNTROWS ( FactDelivery ), FactDelivery[sla_breach_flag] = FALSE )
+VAR TotalCount = COUNTROWS ( FactDelivery )
+RETURN
+    DIVIDE ( OnTimeCount, TotalCount ) * 100
+
+// KPI_DEFINITIONS.md #2. Calculated independently (not as 100 - [On-Time
+// Delivery Rate %]) so the two can be cross-validated to agree exactly,
+// per DAX_MEASURE_PLAN.md's explicit requirement.
+SLA Breach Rate % :=
+VAR BreachCount = [SLA Breaches]
+VAR TotalCount = COUNTROWS ( FactDelivery )
+RETURN
+    DIVIDE ( BreachCount, TotalCount ) * 100
+
+// KPI_DEFINITIONS.md #3.
+Average Delivery Time (mins) :=
+AVERAGE ( FactDelivery[delivery_time_minutes] )
+
+// KPI_DEFINITIONS.md #4. PERCENTILE.INC uses linear interpolation — the
+// same method as SQL's PERCENTILE_CONT and Python's numpy.percentile
+// default, per the documented 3-way cross-validation requirement.
+P90 Delivery Time (mins) :=
+PERCENTILE.INC ( FactDelivery[delivery_time_minutes], 0.9 )
+
+// Delivery Time Trend (Weekly): no new measure. Plot [Average Delivery
+// Time (mins)] and [P90 Delivery Time (mins)] with DimDate[week_number]
+// on the axis. Partial-week annotation (DASHBOARD_PLANNING.md: "tooltip
+// shows the week's row count") needs no new column — add [Total
+// Deliveries] as a tooltip field on the same visual.
+
+
+// -----------------------------------------------------------------------
+// AREA & CATEGORY PERFORMANCE PAGE (DAX_MEASURE_PLAN.md)
+// -----------------------------------------------------------------------
+
+// Breach Rate by Area: no new measure — plot [SLA Breach Rate %] with
+// DimArea[area_name] on rows. "Other" must be excluded from this
+// specific area-TIER comparison via a visual-level filter on
+// DimArea[area_tier_valid_flag] = TRUE (set in the visual's filter pane),
+// per DAX_MEASURE_PLAN.md's explicit "applied via the flag, not
+// hardcoded" requirement — never filter on area_name = 'Other' directly.
+// The Executive Summary page's overall [SLA Breach Rate %] figure must
+// NOT carry this filter (it reports the true, whole-dataset rate,
+// matching sql/analysis/Q01's unfiltered result).
+
+// P90 Delivery Time by Area: no new measure — [P90 Delivery Time (mins)]
+// with DimArea[area_name] on rows. Same area_tier_valid_flag visual
+// filter as above where the page frames this as a tier comparison.
+
+// Average Delivery Time by Category: no new measure — [Average Delivery
+// Time (mins)] with DimCategory[category_name] on rows.
+
+
+// -----------------------------------------------------------------------
+// AGENT PERFORMANCE PAGE (DAX_MEASURE_PLAN.md)
+// ATTRIBUTE-LEVEL ONLY — DimAgent has no true Agent_ID. Every measure and
+// calculated column below describes a rating/age ATTRIBUTE, never an
+// individual agent.
+// -----------------------------------------------------------------------
+
+// Calculated column on DimAgent, NOT a measure — needed because "Delivery
+// Time by Agent Rating Band" requires an axis grouping, not an aggregate.
+// Uses the same value-based FLOOR bucketing already validated correct in
+// sql/analysis/Q04 (0.5-point bands, zero band overlap, confirmed in
+// reports/sql_senior_audit.md) — the same pattern the Q09 SQL remediation
+// adopted, deliberately NOT a row-ranked NTILE, so no agent_rating value
+// can ever be split across two bands. Returns BLANK() for rating-invalid
+// rows so they drop out of any visual built on this column without a
+// separate filter.
+//
+// DimAgent[Rating Band] =
+//     IF (
+//         DimAgent[agent_rating_valid_flag] = TRUE,
+//         ROUNDDOWN ( DimAgent[agent_rating] / 0.5, 0 ) * 0.5,
+//         BLANK ()
+//     )
+
+// Delivery Time by Agent Rating Band: no new measure — [Average Delivery
+// Time (mins)] with DimAgent[Rating Band] on the axis. Row count used by
+// this visual matches the row count Python's Test 3 (STATISTICAL_ANALYSIS.md)
+// used — surface via [Total Deliveries] in a tooltip, per
+// DAX_MEASURE_PLAN.md's footnote requirement.
+
+// Agent Age vs. Delivery Time: no new measure and no new column — plot
+// [Average Delivery Time (mins)] against DimAgent[agent_age] directly
+// (age is already a small integer range, no banding scheme is documented
+// for it, so none is invented). Apply a visual-level filter on
+// DimAgent[agent_age_valid_flag] = TRUE.
+
+// Workload Distribution: row count via [Total Deliveries]; variance via
+// the measure below, both by agent-attribute bucket (Rating Band or age).
+Delivery Time Std Dev :=
+STDEV.P ( FactDelivery[delivery_time_minutes] )
+
+
+// -----------------------------------------------------------------------
+// DELAY ROOT CAUSE PAGE (DAX_MEASURE_PLAN.md)
+// -----------------------------------------------------------------------
+
+// Breach Rate by Weather / Breach Rate by Traffic: no new measures —
+// [SLA Breach Rate %] with DimWeatherTraffic[weather] or [traffic] on
+// rows respectively.
+
+// Breach Rate by Area + Traffic (Pareto). Intended grain is explicitly
+// two-dimensional (area x traffic) — ALLSELECTED on both columns
+// preserves that grain regardless of how the visual is sliced, per
+// DAX_MEASURE_PLAN.md's explicit requirement not to let it collapse to
+// one dimension.
+Breach Rank (Area x Traffic) :=
+RANKX (
+    ALLSELECTED ( DimArea[area_name], DimWeatherTraffic[traffic] ),
+    CALCULATE ( [SLA Breaches] ),
+    ,
+    DESC,
+    DENSE
+)
+
+Cumulative Breach Share % :=
+VAR CurrentRank = [Breach Rank (Area x Traffic)]
+VAR TotalBreachesInSelection =
+    CALCULATE ( [SLA Breaches], ALLSELECTED ( DimArea[area_name], DimWeatherTraffic[traffic] ) )
+VAR RunningTotal =
+    SUMX (
+        FILTER (
+            ALLSELECTED ( DimArea[area_name], DimWeatherTraffic[traffic] ),
+            [Breach Rank (Area x Traffic)] <= CurrentRank
+        ),
+        [SLA Breaches]
+    )
+RETURN
+    DIVIDE ( RunningTotal, TotalBreachesInSelection ) * 100
+// Matches sql/analysis/Q20's grain and sql/analysis/Q14's running-total
+// logic (post-remediation: Q14's tie order is now deterministic via a
+// documented secondary key — see reports/sql_senior_audit.md remediation
+// section). Low-row-count combinations are NOT excluded here, matching
+// SQL_ANALYSIS_PLAN.md Q20's own documented policy (row_count exposed,
+// no invented minimum-sample threshold) — expose [Total Deliveries] as a
+// tooltip field so a viewer can judge sample size themselves.
+
+// Adverse vs. Clear Weather Delta. Grouping pulled verbatim from
+// sql/analysis/Q19_clear_vs_adverse_weather_delta.sql ("Clear" = Sunny,
+// "Adverse" = all other observed values) — not redefined independently.
+Adverse vs Clear Weather Delta (mins) :=
+VAR ClearAvg =
+    CALCULATE ( [Average Delivery Time (mins)], DimWeatherTraffic[weather] = "Sunny" )
+VAR AdverseAvg =
+    CALCULATE ( [Average Delivery Time (mins)], DimWeatherTraffic[weather] <> "Sunny" )
+RETURN
+    AdverseAvg - ClearAvg

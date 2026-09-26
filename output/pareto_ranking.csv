@@ -1,0 +1,45 @@
+dimension,segment,n,breach_count,breach_rank,cumulative_breach_share_pct
+area,Metropolitian,32634,8648,1,83.7335
+area,Urban,9726,1398,2,97.2696
+area,Semi-Urban,152,152,3,98.7413
+area,Other,1136,130,4,100.0
+category,Books,2817,693,1,6.7099
+category,Electronics,2843,689,2,13.3811
+category,Snacks,2767,689,3,20.0523
+category,Jewelry,2796,680,4,26.6363
+category,Outdoors,2741,660,5,33.0267
+category,Pet Supplies,2684,650,6,39.3203
+category,Home,2680,648,7,45.5945
+category,Toys,2773,647,8,51.859
+category,Clothing,2662,637,9,58.0267
+category,Shoes,2661,633,10,64.1557
+category,Skincare,2766,629,11,70.2459
+category,Cosmetics,2670,621,12,76.2587
+category,Grocery,2688,620,13,82.2618
+category,Kitchen,2667,618,14,88.2455
+category,Apparel,2722,616,15,94.2099
+category,Sports,2711,598,16,100.0
+weather_traffic,Fog / Jam,2365,1592,1,15.4144
+weather_traffic,Cloudy / Jam,2267,1491,2,29.8509
+weather_traffic,Windy / Jam,2286,855,3,38.1294
+weather_traffic,Sandstorms / Jam,2316,814,4,46.0108
+weather_traffic,Stormy / Jam,2259,799,5,53.7471
+weather_traffic,Fog / Medium,1798,681,6,60.3408
+weather_traffic,Cloudy / Medium,1779,681,7,66.9345
+weather_traffic,Windy / Medium,1808,395,8,70.7591
+weather_traffic,Stormy / Medium,1783,391,9,74.5449
+weather_traffic,Sandstorms / Medium,1731,375,10,78.1758
+weather_traffic,Fog / Low,2520,324,11,81.3129
+weather_traffic,Cloudy / Low,2525,311,12,84.3242
+weather_traffic,Sunny / Jam,2232,293,13,87.1611
+weather_traffic,Stormy / High,713,189,14,88.9911
+weather_traffic,Sunny / Low,2401,186,15,90.792
+weather_traffic,Cloudy / High,717,167,16,92.409
+weather_traffic,Sandstorms / High,678,167,17,94.0259
+weather_traffic,Windy / High,715,160,18,95.5751
+weather_traffic,Fog / High,757,159,19,97.1146
+weather_traffic,Sunny / High,716,119,20,98.2668
+weather_traffic,Sunny / Medium,1729,88,21,99.1189
+weather_traffic,Windy / Low,2414,39,22,99.4965
+weather_traffic,Stormy / Low,2619,27,23,99.7579
+weather_traffic,Sandstorms / Low,2520,25,24,100.0

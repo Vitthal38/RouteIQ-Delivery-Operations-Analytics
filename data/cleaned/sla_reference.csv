@@ -1,0 +1,17 @@
+Category,row_count,sla_threshold_minutes
+Apparel,2722,165.0
+Books,2817,160.0
+Clothing,2662,160.0
+Cosmetics,2670,165.0
+Electronics,2843,160.0
+Grocery,2688,33.0
+Home,2680,160.0
+Jewelry,2796,160.0
+Kitchen,2667,165.0
+Outdoors,2741,160.0
+Pet Supplies,2684,160.0
+Shoes,2661,160.0
+Skincare,2766,165.0
+Snacks,2767,160.0
+Sports,2711,165.0
+Toys,2773,160.0

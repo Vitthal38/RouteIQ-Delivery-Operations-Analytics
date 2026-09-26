@@ -1,0 +1,17 @@
+# Python / Jupyter build artifacts
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Run logs (regenerated on every execution)
+logs/
+
+# Local tooling config
+.claude/
+
+# Unrelated to RouteIQ (a different project's report)
+output/dashboards customer retention and churn analysis.pbix
+
+# Raw source data: not redistributed (download from Kaggle; see README)
+/amazon_delivery.csv
+/data/raw/

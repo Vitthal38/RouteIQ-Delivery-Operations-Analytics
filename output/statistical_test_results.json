@@ -1,0 +1,275 @@
+{
+  "test_1_traffic_vs_delivery_time": {
+    "business_question": "Does traffic significantly affect delivery time? (Business Questions #3, #13)",
+    "h0": "Mean/distribution of delivery_time_minutes is equal across all Traffic groups.",
+    "h1": "At least one Traffic group's delivery_time_minutes differs.",
+    "groups": {
+      "High": 4296,
+      "Jam": 13725,
+      "Low": 14999,
+      "Medium": 10628
+    },
+    "n_total": 43648,
+    "assumption_checks": {
+      "normality_per_group_shapiro_on_sample": {
+        "High": {
+          "shapiro_w": 0.9861,
+          "shapiro_p": 3.6917379198456725e-20,
+          "n_sampled": 4296,
+          "n_total": 4296,
+          "skewness": -0.1111,
+          "normal_at_alpha_0.05": false
+        },
+        "Jam": {
+          "shapiro_w": 0.9882,
+          "shapiro_p": 4.712941916152907e-20,
+          "n_sampled": 5000,
+          "n_total": 13725,
+          "skewness": -0.2145,
+          "normal_at_alpha_0.05": false
+        },
+        "Low": {
+          "shapiro_w": 0.9852,
+          "shapiro_p": 1.7724484359635841e-22,
+          "n_sampled": 5000,
+          "n_total": 14999,
+          "skewness": 0.2048,
+          "normal_at_alpha_0.05": false
+        },
+        "Medium": {
+          "shapiro_w": 0.9926,
+          "shapiro_p": 1.914782842556515e-15,
+          "n_sampled": 5000,
+          "n_total": 10628,
+          "skewness": -0.1002,
+          "normal_at_alpha_0.05": false
+        }
+      },
+      "homogeneity_of_variance_levene": {
+        "statistic": 689.3356,
+        "p_value": 0.0,
+        "equal_variance_at_alpha_0.05": false
+      },
+      "all_groups_normal": false,
+      "equal_variance": false
+    },
+    "test_selected": "Kruskal-Wallis H-test",
+    "test_selection_reason": "Normality and/or homogeneity of variance failed at alpha=0.05 -> non-parametric fallback used, per the documented decision tree.",
+    "test_statistic": 6132.4554,
+    "p_value": 0.0,
+    "significant_at_alpha_0.05": true,
+    "effect_size_name": "epsilon_squared",
+    "effect_size_value": 0.1404,
+    "effect_size_band": "large",
+    "interpretation": "The Kruskal-Wallis H-test result is statistically significant (p=0). Effect size (epsilon_squared=0.1404) is classified as 'large' per Cohen's conventional bands. This describes an observed association between Traffic and delivery time \u2014 it does not establish that Traffic causes delivery delay.",
+    "limitation": "At n_total=43648, even a small effect can reach statistical significance; the effect-size band above, not the p-value alone, should drive any operational interpretation. No pairwise post-hoc comparison is performed \u2014 STATISTICAL_ANALYSIS.md does not document a post-hoc method or multiple-comparison correction for this test."
+  },
+  "test_2_weather_vs_delivery_time": {
+    "business_question": "Does weather significantly affect delivery time? (Business Questions #5, #12, #13)",
+    "h0": "Mean/distribution of delivery_time_minutes is equal across all Weather groups.",
+    "h1": "At least one Weather group's delivery_time_minutes differs.",
+    "groups": {
+      "Cloudy": 7288,
+      "Fog": 7440,
+      "Sandstorms": 7245,
+      "Stormy": 7374,
+      "Sunny": 7078,
+      "Windy": 7223
+    },
+    "n_total": 43648,
+    "assumption_checks": {
+      "normality_per_group_shapiro_on_sample": {
+        "Cloudy": {
+          "shapiro_w": 0.9882,
+          "shapiro_p": 4.9099693905653e-20,
+          "n_sampled": 5000,
+          "n_total": 7288,
+          "skewness": -0.0505,
+          "normal_at_alpha_0.05": false
+        },
+        "Fog": {
+          "shapiro_w": 0.9872,
+          "shapiro_p": 6.672498021339014e-21,
+          "n_sampled": 5000,
+          "n_total": 7440,
+          "skewness": -0.0663,
+          "normal_at_alpha_0.05": false
+        },
+        "Sandstorms": {
+          "shapiro_w": 0.992,
+          "shapiro_p": 3.6182786810775707e-16,
+          "n_sampled": 5000,
+          "n_total": 7245,
+          "skewness": 0.1039,
+          "normal_at_alpha_0.05": false
+        },
+        "Stormy": {
+          "shapiro_w": 0.9917,
+          "shapiro_p": 1.389234346802329e-16,
+          "n_sampled": 5000,
+          "n_total": 7374,
+          "skewness": 0.1089,
+          "normal_at_alpha_0.05": false
+        },
+        "Sunny": {
+          "shapiro_w": 0.9569,
+          "shapiro_p": 4.3731426472325064e-36,
+          "n_sampled": 5000,
+          "n_total": 7078,
+          "skewness": 0.7754,
+          "normal_at_alpha_0.05": false
+        },
+        "Windy": {
+          "shapiro_w": 0.9916,
+          "shapiro_p": 1.1763366234028291e-16,
+          "n_sampled": 5000,
+          "n_total": 7223,
+          "skewness": 0.0892,
+          "normal_at_alpha_0.05": false
+        }
+      },
+      "homogeneity_of_variance_levene": {
+        "statistic": 240.7436,
+        "p_value": 1.52996861193143e-254,
+        "equal_variance_at_alpha_0.05": false
+      },
+      "all_groups_normal": false,
+      "equal_variance": false
+    },
+    "test_selected": "Kruskal-Wallis H-test",
+    "test_selection_reason": "Normality and/or homogeneity of variance failed at alpha=0.05 -> non-parametric fallback used, per the documented decision tree.",
+    "test_statistic": 2262.8928,
+    "p_value": 0.0,
+    "significant_at_alpha_0.05": true,
+    "effect_size_name": "epsilon_squared",
+    "effect_size_value": 0.0517,
+    "effect_size_band": "small",
+    "interpretation": "The Kruskal-Wallis H-test result is statistically significant (p=0). Effect size (epsilon_squared=0.0517) is classified as 'small' per Cohen's conventional bands. This describes an observed association between Weather and delivery time \u2014 it does not establish that Weather causes delivery delay.",
+    "limitation": "At n_total=43648, even a small effect can reach statistical significance; the effect-size band above, not the p-value alone, should drive any operational interpretation. No pairwise post-hoc comparison is performed \u2014 STATISTICAL_ANALYSIS.md does not document a post-hoc method or multiple-comparison correction for this test."
+  },
+  "test_2b_clear_vs_adverse_weather": {
+    "business_question": "Delivery-time delta: clear vs. adverse weather (Business Question #19)",
+    "h0": "Mean delivery_time_minutes is equal between Clear (Sunny) and Adverse (non-Sunny).",
+    "h1": "Mean delivery_time_minutes differs between Clear (Sunny) and Adverse (non-Sunny).",
+    "group_sizes": {
+      "Clear (Sunny)": 7078,
+      "Adverse (non-Sunny)": 36570
+    },
+    "assumption_checks": {
+      "normality": {
+        "Clear (Sunny)": {
+          "shapiro_w": 0.9582,
+          "shapiro_p": 1.1746863182559258e-35,
+          "n_sampled": 5000,
+          "normal": false
+        },
+        "Adverse (non-Sunny)": {
+          "shapiro_w": 0.9927,
+          "shapiro_p": 2.4202805572385473e-15,
+          "n_sampled": 5000,
+          "normal": false
+        }
+      },
+      "homogeneity_of_variance_levene": {
+        "statistic": 376.0506,
+        "p_value": 2.0251762362002997e-83,
+        "equal_variance": false
+      }
+    },
+    "test_selected": "Mann-Whitney U test",
+    "test_statistic": 88955306.0,
+    "p_value": 0.0,
+    "significant_at_alpha_0.05": true,
+    "effect_size_name": "cohens_d",
+    "effect_size_value": -0.4965,
+    "effect_size_band": "small",
+    "interpretation": "The Mann-Whitney U test result is statistically significant (p=0). Cohen's d=-0.4965 is classified as 'small'. This describes an observed difference between Clear (Sunny) and Adverse (non-Sunny) \u2014 it does not establish that day type causes a delivery-time difference.",
+    "limitation": "At n=43648, statistical significance is easy to reach even for a practically negligible difference; the effect-size band should drive interpretation."
+  },
+  "test_3_agent_rating_vs_delivery_time": {
+    "business_question": "Relationship between agent rating and delivery time (Business Question #4)",
+    "h0": "No linear relationship between agent_rating and delivery_time_minutes (population correlation rho=0).",
+    "h1": "rho != 0.",
+    "n": 43594,
+    "assumption_checks": {
+      "linearity_diagnostic": {
+        "pearson_r": -0.3077,
+        "spearman_r": -0.2601,
+        "gap": -0.0476,
+        "linear_relationship_reasonable": false
+      }
+    },
+    "test_selected": "Spearman correlation (fallback, linearity assumption did not hold)",
+    "correlation_coefficient": -0.2601,
+    "r_squared": 0.0677,
+    "p_value": 0.0,
+    "significant_at_alpha_0.05": true,
+    "effect_size_name": "r (the coefficient itself)",
+    "effect_size_band": "weak",
+    "interpretation": "Spearman r=-0.2601 (r^2=0.0677), statistically significant (p=0). Classified as a 'weak' relationship. This is an observed association between agent_rating and delivery_time_minutes \u2014 it does not establish that one causes the other; reverse causality or confounding factors are plausible alternative explanations.",
+    "limitation": "Correlation does not establish causation. At this sample size, even a weak correlation reaches statistical significance."
+  },
+  "test_4_distance_vs_delivery_time": {
+    "business_question": "Does distance correlate with delivery time, or is it condition-driven? (Business Question #10)",
+    "h0": "No linear relationship between distance_km and delivery_time_minutes (population correlation rho=0).",
+    "h1": "rho != 0.",
+    "n": 39997,
+    "assumption_checks": {
+      "linearity_diagnostic": {
+        "pearson_r": 0.2781,
+        "spearman_r": 0.2853,
+        "gap": 0.0071,
+        "linear_relationship_reasonable": true
+      }
+    },
+    "test_selected": "Pearson correlation (primary)",
+    "correlation_coefficient": 0.2781,
+    "r_squared": 0.0774,
+    "p_value": 0.0,
+    "significant_at_alpha_0.05": true,
+    "effect_size_name": "r (the coefficient itself)",
+    "effect_size_band": "weak",
+    "interpretation": "Pearson r=0.2781 (r^2=0.0774), statistically significant (p=0). Classified as a 'weak' relationship. This is an observed association between distance_km and delivery_time_minutes \u2014 it does not establish that one causes the other; reverse causality or confounding factors are plausible alternative explanations.",
+    "limitation": "Correlation does not establish causation. At this sample size, even a weak correlation reaches statistical significance."
+  },
+  "test_5_weekend_vs_weekday": {
+    "business_question": "Weekend vs. weekday delivery time (Business Question #7)",
+    "h0": "Mean delivery_time_minutes is equal between Weekday and Weekend.",
+    "h1": "Mean delivery_time_minutes differs between Weekday and Weekend.",
+    "group_sizes": {
+      "Weekday": 31627,
+      "Weekend": 12021
+    },
+    "assumption_checks": {
+      "normality": {
+        "Weekday": {
+          "shapiro_w": 0.9917,
+          "shapiro_p": 1.512613156245677e-16,
+          "n_sampled": 5000,
+          "normal": false
+        },
+        "Weekend": {
+          "shapiro_w": 0.9924,
+          "shapiro_p": 1.0440701926993978e-15,
+          "n_sampled": 5000,
+          "normal": false
+        }
+      },
+      "homogeneity_of_variance_levene": {
+        "statistic": 2.3325,
+        "p_value": 0.1267029277880266,
+        "equal_variance": true
+      }
+    },
+    "test_selected": "Mann-Whitney U test",
+    "test_statistic": 190043643.5,
+    "p_value": 0.9657720001825713,
+    "significant_at_alpha_0.05": false,
+    "effect_size_name": "cohens_d",
+    "effect_size_value": -0.0013,
+    "effect_size_band": "negligible",
+    "interpretation": "The Mann-Whitney U test result is not statistically significant (p=0.965772). Cohen's d=-0.0013 is classified as 'negligible'. This describes an observed difference between Weekday and Weekend \u2014 it does not establish that day type causes a delivery-time difference.",
+    "limitation": "At n=43648, statistical significance is easy to reach even for a practically negligible difference; the effect-size band should drive interpretation."
+  },
+  "multiple_comparisons_note": "No pairwise post-hoc comparisons were performed for Tests 1 or 2, even where the omnibus test was significant. STATISTICAL_ANALYSIS.md documents omnibus tests only and does not specify a post-hoc method or multiple-comparison correction for either test \u2014 inventing one (Tukey HSD, Bonferroni, Dunn's test) would itself be an undocumented methodological choice, which this project's rules prohibit."
+}
