@@ -1,7 +1,7 @@
 -- =============================================================================
 -- 09_create_analytical_view.sql
 -- The controlled analytical dataset as a view: one row per delivery, every derived
--- feature defined ONCE. SQL analysis (Q23-Q30) and the Python analytical dataset
+-- feature defined ONCE. SQL analysis (Q23-Q29) and the Python analytical dataset
 -- (data/processed/analytical_deliveries.csv) use the same definitions, and
 -- tests/test_reconciliation.py checks that the two agree.
 --

@@ -124,6 +124,34 @@
     "prep_share_10": 0.3319739736070381,
     "prep_share_15": 0.3331424120234604
   },
+  "rating_shape": {
+    "column": "agent_rating",
+    "cut": 4.5,
+    "value_below": 4.4,
+    "value_at_cut": 4.5,
+    "rate_below": 0.6318883174136665,
+    "rate_at_cut": 0.10475325461701483,
+    "n_below": 1361,
+    "n_at_cut": 3303,
+    "step_size_pts": -52.71350627966517,
+    "typical_other_step_pts": 1.6632894373912521,
+    "n_reliable_values": 16,
+    "n_values_dropped_for_small_n": 10
+  },
+  "age_shape": {
+    "column": "agent_age",
+    "cut": 30.0,
+    "value_below": 29.0,
+    "value_at_cut": 30.0,
+    "rate_below": 0.14240073026015518,
+    "rate_at_cut": 0.31716082659478884,
+    "n_below": 2191,
+    "n_at_cut": 2226,
+    "step_size_pts": 17.476009633463367,
+    "typical_other_step_pts": 0.6422409839399873,
+    "n_reliable_values": 20,
+    "n_values_dropped_for_small_n": 0
+  },
   "rating": {
     "best_cut": 4.5,
     "stratified_by_traffic_x_area": {
@@ -191,234 +219,13 @@
       "mh_or_ci_high": 4.214876947509303
     }
   },
-  "driver_model": {
-    "info": {
-      "n_total": 43648,
-      "excluded_semi_urban": 152,
-      "excluded_missing_rating": 54,
-      "excluded_both": 0,
-      "n_model": 43442,
-      "n_events": 10165,
-      "event_rate": 0.23399014778325122
-    },
-    "holdout": {
-      "A": {
-        "n_train": 30409,
-        "n_test": 13033,
-        "test_at_0_5": {
-          "auc": 0.9016368810584551,
-          "brier": 0.10507557435428849,
-          "log_loss": 0.33286802313221664,
-          "threshold": 0.5,
-          "accuracy": 0.8532187523977596,
-          "sensitivity": 0.5963934426229508,
-          "specificity": 0.9316838625663628,
-          "precision": 0.7273090763694522,
-          "baseline_accuracy_majority": 0.7659786695311901
-        },
-        "test_at_youden": {
-          "auc": 0.9016368810584551,
-          "brier": 0.10507557435428849,
-          "log_loss": 0.33286802313221664,
-          "threshold": 0.25889166757413423,
-          "accuracy": 0.8295097061305916,
-          "sensitivity": 0.8144262295081968,
-          "specificity": 0.8341180006010217,
-          "precision": 0.6,
-          "baseline_accuracy_majority": 0.7659786695311901
-        },
-        "train_auc": 0.9051703179275624
-      },
-      "B": {
-        "n_train": 30409,
-        "n_test": 13033,
-        "test_at_0_5": {
-          "auc": 0.9084530751457807,
-          "brier": 0.10238524801829565,
-          "log_loss": 0.3232490235047115,
-          "threshold": 0.5,
-          "accuracy": 0.8573620808716336,
-          "sensitivity": 0.6075409836065574,
-          "specificity": 0.9336872683562055,
-          "precision": 0.736779324055666,
-          "baseline_accuracy_majority": 0.7659786695311901
-        },
-        "test_at_youden": {
-          "auc": 0.9084530751457807,
-          "brier": 0.10238524801829565,
-          "log_loss": 0.3232490235047115,
-          "threshold": 0.24359083960710837,
-          "accuracy": 0.8386403744341288,
-          "sensitivity": 0.8157377049180328,
-          "specificity": 0.8456375838926175,
-          "precision": 0.6175229585505088,
-          "baseline_accuracy_majority": 0.7659786695311901
-        },
-        "train_auc": 0.9118500380211252
-      },
-      "C": {
-        "n_train": 30409,
-        "n_test": 13033,
-        "test_at_0_5": {
-          "auc": 0.915506065228922,
-          "brier": 0.10062855845840321,
-          "log_loss": 0.3174674223159099,
-          "threshold": 0.5,
-          "accuracy": 0.8580526356172792,
-          "sensitivity": 0.6449180327868852,
-          "specificity": 0.9231693879595312,
-          "precision": 0.7194586686174104,
-          "baseline_accuracy_majority": 0.7659786695311901
-        },
-        "test_at_youden": {
-          "auc": 0.915506065228922,
-          "brier": 0.10062855845840321,
-          "log_loss": 0.3174674223159099,
-          "threshold": 0.1885257330577889,
-          "accuracy": 0.8325788383334612,
-          "sensitivity": 0.8727868852459016,
-          "specificity": 0.8202945006511069,
-          "precision": 0.5973967684021544,
-          "baseline_accuracy_majority": 0.7659786695311901
-        },
-        "train_auc": 0.9184732166620077
-      }
-    },
-    "lr_tests": {
-      "A_vs_B_adds_hour_band": {
-        "chi2": 846.9234856748335,
-        "df": 6,
-        "p_value": 1.1157099580322245e-179,
-        "delta_aic": -834.9234856748335,
-        "delta_bic": -782.8483937104502
-      },
-      "A_vs_C_adds_traffic_x_weather": {
-        "chi2": 1301.406417230497,
-        "df": 15,
-        "p_value": 2.6448239943908037e-268,
-        "delta_aic": -1271.406417230497,
-        "delta_bic": -1141.2186873195424
-      }
-    },
-    "influence": {
-      "max_cooks_d": 0.0011907159187336228,
-      "n_above_4_over_n": 3521,
-      "max_leverage": 0.004748423590044922,
-      "mean_leverage": 0.00036830716817826115,
-      "refit_dropping_top_0_5pct_cooks": {
-        "n_dropped": 217,
-        "max_abs_log_or_change": 0.703574359089849
-      }
-    },
-    "class_balance": {
-      "events": 10165,
-      "non_events": 33277,
-      "event_rate": 0.23399014778325122,
-      "note": "Event rate ~24%: no resampling needed; AUC/Brier/log-loss used instead of accuracy alone."
-    },
-    "robustness_grocery_flag": {
-      "odds_ratio_multiplier_vs_A": {
-        "const": 1.0070561363644372,
-        "traffic[High]": 1.0007038840975864,
-        "traffic[Jam]": 1.0015727596576167,
-        "traffic[Medium]": 1.0007711003207451,
-        "weather[Cloudy]": 0.9988268469369264,
-        "weather[Fog]": 1.001244123970931,
-        "weather[Sandstorms]": 0.9991726116685882,
-        "weather[Stormy]": 0.9991911808063778,
-        "weather[Windy]": 1.000347736172286,
-        "area[Other]": 0.9998261193137674,
-        "area[Urban]": 0.9993783963993685,
-        "vehicle[scooter]": 0.9991332678928762,
-        "vehicle[van]": 0.9995246101139362,
-        "rating_lt_4_5": 1.000813717701589,
-        "age_ge_30": 1.0001671183769403,
-        "prep_per_5min": 1.0001593749243147
-      },
-      "max_abs_pct_change": 0.7056136364437249
-    },
-    "odds_ratios_A": {
-      "const": {
-        "odds_ratio": 0.00556030869998602,
-        "ci_low": 0.004761661812872547,
-        "ci_high": 0.006492908159827721
-      },
-      "traffic[High]": {
-        "odds_ratio": 6.409896899114294,
-        "ci_low": 5.687489104406762,
-        "ci_high": 7.224062763555946
-      },
-      "traffic[Jam]": {
-        "odds_ratio": 21.254694524641234,
-        "ci_low": 19.349979997230786,
-        "ci_high": 23.34689955237507
-      },
-      "traffic[Medium]": {
-        "odds_ratio": 8.650769646503392,
-        "ci_low": 7.848637618514681,
-        "ci_high": 9.53487969686983
-      },
-      "weather[Cloudy]": {
-        "odds_ratio": 8.070385477992685,
-        "ci_low": 7.2024153713063725,
-        "ci_high": 9.042955509462894
-      },
-      "weather[Fog]": {
-        "odds_ratio": 8.675675820631986,
-        "ci_low": 7.7452882626034585,
-        "ci_high": 9.717824358857177
-      },
-      "weather[Sandstorms]": {
-        "odds_ratio": 1.5493437102646792,
-        "ci_low": 1.3695921909754334,
-        "ci_high": 1.7526866379305894
-      },
-      "weather[Stormy]": {
-        "odds_ratio": 1.6529758790780777,
-        "ci_low": 1.4625049642679693,
-        "ci_high": 1.8682529793542015
-      },
-      "weather[Windy]": {
-        "odds_ratio": 1.8128070515538595,
-        "ci_low": 1.6050874662858832,
-        "ci_high": 2.0474083034039947
-      },
-      "area[Other]": {
-        "odds_ratio": 0.46349239499755374,
-        "ci_low": 0.366361426048749,
-        "ci_high": 0.586375051919312
-      },
-      "area[Urban]": {
-        "odds_ratio": 0.6156552041837662,
-        "ci_low": 0.5686556561591736,
-        "ci_high": 0.6665392779148924
-      },
-      "vehicle[scooter]": {
-        "odds_ratio": 0.4192252919382045,
-        "ci_low": 0.391232463497446,
-        "ci_high": 0.4492210176771798
-      },
-      "vehicle[van]": {
-        "odds_ratio": 0.36894328529669956,
-        "ci_low": 0.32589243123698997,
-        "ci_high": 0.4176812184586625
-      },
-      "rating_lt_4_5": {
-        "odds_ratio": 14.961804556057468,
-        "ci_low": 13.9143202242919,
-        "ci_high": 16.0881445852346
-      },
-      "age_ge_30": {
-        "odds_ratio": 3.013482079745828,
-        "ci_low": 2.8318057373695114,
-        "ci_high": 3.2068139862534246
-      },
-      "prep_per_5min": {
-        "odds_ratio": 0.9950102000323884,
-        "ci_low": 0.9597237706815538,
-        "ci_high": 1.0315940152919278
-      }
-    }
+  "rating_age_analysis_population": {
+    "n_total": 43648,
+    "excluded_semi_urban": 152,
+    "excluded_missing_rating": 54,
+    "n_analysis": 43442,
+    "n_events": 10165,
+    "note": "Excluded so a 100%-breach group (Semi-Urban) and missing ratings do not distort rate comparisons."
   },
   "sla_sensitivity": {
     "overall": [

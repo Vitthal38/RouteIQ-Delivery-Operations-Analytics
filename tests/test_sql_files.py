@@ -5,12 +5,12 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "sql" / "analysis"
-NEW_QUERIES = [f"Q{n}" for n in range(23, 31)]
+NEW_QUERIES = [f"Q{n}" for n in range(23, 30)]
 
 
-def test_thirty_numbered_queries_exist():
+def test_twentynine_numbered_queries_exist():
     numbered = sorted(p.name[:3] for p in ANALYSIS.glob("Q[0-9][0-9]_*.sql"))
-    assert numbered == [f"Q{n:02d}" for n in range(1, 31)]
+    assert numbered == [f"Q{n:02d}" for n in range(1, 30)]
 
 
 @pytest.mark.parametrize("q", NEW_QUERIES)

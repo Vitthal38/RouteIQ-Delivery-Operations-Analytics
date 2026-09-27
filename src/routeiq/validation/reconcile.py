@@ -46,8 +46,8 @@ def _load_pandas_layer() -> dict[str, float]:
         v[f"pareto_cumulative_pct_rank_{int(r.rank)}"] = 100 * r.cumulative_share
     v["rating_best_cut"] = R["rating"]["best_cut"]
     v["age_best_cut"] = R["age"]["best_cut"]
-    info = R["driver_model"]["info"]
-    v["model_population_rows"], v["model_population_events"] = info["n_model"], info["n_events"]
+    info = R["rating_age_analysis_population"]
+    v["analysis_population_rows"], v["analysis_population_events"] = info["n_analysis"], info["n_events"]
     reg = t("statistical_test_register").set_index("id")
     v["weekend_p_value"] = float(reg.loc["T12", "p_value"])
     return v
@@ -56,19 +56,20 @@ def _load_pandas_layer() -> dict[str, float]:
 def _load_sql_layer() -> dict[str, float]:
     """Values read from the SQL result snapshots written by scripts/run_sql.py."""
     v: dict[str, float] = {}
-    if not (SQL_RESULTS_DIR / "Q30_cross_validation_reconciliation.csv").exists():
+    if not (SQL_RESULTS_DIR / "Q29_cross_validation_reconciliation.csv").exists():
         return v
     q = lambda name: pd.read_csv(next(SQL_RESULTS_DIR.glob(f"{name}_*.csv")))
-    q30 = q("Q30")
-    v["total_deliveries"] = float(q30.loc[q30["id"] == 1, "actual"].iloc[0])
-    v["breached_deliveries"] = float(q30.loc[q30["id"] == 4, "actual"].iloc[0])
-    v["q30_checks_passed"] = float((q30["status"] == "PASS").sum())
+    q29r = q("Q29")
+    v["total_deliveries"] = float(q29r.loc[q29r["id"] == 1, "actual"].iloc[0])
+    v["breached_deliveries"] = float(q29r.loc[q29r["id"] == 4, "actual"].iloc[0])
+    v["analysis_population_rows"] = float(q29r.loc[q29r["id"] == 13, "actual"].iloc[0])
+    v["q29_checks_passed"] = float((q29r["status"] == "PASS").sum())
     for r in q("Q23").itertuples():
         v[f"breach_rate_pct_hour_{int(r.order_hour)}"] = r.breach_rate_pct
         v[f"n_hour_{int(r.order_hour)}"] = r.n
     q25, q26 = q("Q25"), q("Q26")
-    v["rating_best_cut"] = float(q25.loc[q25["step_rank"] == 1, "cut"].iloc[0])
-    v["age_best_cut"] = float(q26.loc[q26["step_rank"] == 1, "cut"].iloc[0])
+    v["rating_best_cut"] = float(q25.loc[q25["step_rank"] == 1, "agent_rating"].iloc[0])
+    v["age_best_cut"] = float(q26.loc[q26["step_rank"] == 1, "agent_age"].iloc[0])
     q27 = q("Q27")
     for r in q27.itertuples():
         p = int(round(100 * r.percentile))
@@ -78,8 +79,6 @@ def _load_sql_layer() -> dict[str, float]:
         elif r.cut in ("traffic", "area") and p == 75:
             v[f"breach_rate_pct_{r.cut}_{r.level}"] = r.breach_rate_pct
             v[f"n_{r.cut}_{r.level}"] = r.n
-    v["model_population_rows"] = float(q("Q29")["rows"].iloc[0])
-    v["model_population_events"] = float(q("Q29")["events"].iloc[0])
     return v
 
 
@@ -106,8 +105,8 @@ def _independent_layer(ind: dict) -> dict[str, float]:
         v[f"pareto_cumulative_pct_rank_{i}"] = 100 * running / total
     v["rating_best_cut"] = ind["rating_best_cut"][0]
     v["age_best_cut"] = ind["age_best_cut"][0]
-    v["model_population_rows"] = ind["model_population_rows"]
-    v["model_population_events"] = ind["model_population_events"]
+    v["analysis_population_rows"] = ind["analysis_population_rows"]
+    v["analysis_population_events"] = ind["analysis_population_events"]
     v["weekend_p_value"] = float("nan")  # needs a hypothesis test; not recomputed independently
     for band, val in ind["avg_delivery_by_rating_band"].items():
         v[f"avg_delivery_by_rating_{band:.1f}"] = val
@@ -158,10 +157,10 @@ def run_reconciliation(write: bool = True) -> pd.DataFrame:
         row["status"], row["notes"] = status, "; ".join(notes)
         rows.append(row)
     out = pd.DataFrame(rows)
-    if "q30_checks_passed" in layers["sql"]:
-        out = pd.concat([out, pd.DataFrame([{"metric": "sql_q30_checks_passed_of_14", "sql": layers["sql"]["q30_checks_passed"],
+    if "q29_checks_passed" in layers["sql"]:
+        out = pd.concat([out, pd.DataFrame([{"metric": "sql_q29_checks_passed_of_14", "sql": layers["sql"]["q29_checks_passed"],
                                              "independent_csv": 14.0,
-                                             "status": "PASS" if layers["sql"]["q30_checks_passed"] == 14 else "FAIL",
+                                             "status": "PASS" if layers["sql"]["q29_checks_passed"] == 14 else "FAIL",
                                              "notes": ""}])], ignore_index=True)
     if write:
         TABLES_DIR.mkdir(parents=True, exist_ok=True)

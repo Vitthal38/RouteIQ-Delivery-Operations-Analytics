@@ -39,18 +39,18 @@ def test_all_layers_agree():
     assert differs <= KNOWN_V1_DIFFERENCES, f"unexpected v1 Power BI differences: {differs - KNOWN_V1_DIFFERENCES}"
 
 
-def test_sql_snapshots_present_and_all_q30_checks_pass():
-    q30 = SQL_RESULTS_DIR / "Q30_cross_validation_reconciliation.csv"
-    if not q30.exists():
+def test_sql_snapshots_present_and_all_q29_checks_pass():
+    q29 = SQL_RESULTS_DIR / "Q29_cross_validation_reconciliation.csv"
+    if not q29.exists():
         pytest.skip("run scripts/run_sql.py to create SQL result snapshots")
     import pandas as pd
-    df = pd.read_csv(q30)
+    df = pd.read_csv(q29)
     assert len(df) == 14 and (df["status"] == "PASS").all()
 
 
 @pytest.mark.live_sql
 @pytest.mark.skipif(os.environ.get("ROUTEIQ_LIVE_SQL") != "1", reason="set ROUTEIQ_LIVE_SQL=1 and PG* variables")
-def test_live_database_q30_passes():
+def test_live_database_q29_passes():
     import psycopg2
     from pathlib import Path
     conn = psycopg2.connect(host=os.environ.get("PGHOST", "localhost"), port=os.environ.get("PGPORT", "5432"),
@@ -59,7 +59,7 @@ def test_live_database_q30_passes():
     try:
         cur = conn.cursor()
         cur.execute(Path(__file__).resolve().parents[1].joinpath("sql", "analysis",
-                    "Q30_cross_validation_reconciliation.sql").read_text(encoding="utf-8"))
+                    "Q29_cross_validation_reconciliation.sql").read_text(encoding="utf-8"))
         rows = cur.fetchall()
     finally:
         conn.close()

@@ -85,28 +85,34 @@ def compute(cleaned_csv: Path, percentiles: tuple[float, ...] = (0.70, 0.75, 0.8
     out["by_area_traffic"] = group_rate(lambda r: (r["Area"], r["Traffic"]))
 
     # rating / age exact-value and cut scans (independent re-derivation of the "step")
-    def best_cut(value_fn, cuts):
+    def largest_single_step(value_fn, min_n=100):
+        """Where is the sharpest jump between two ADJACENT exact values? Values with fewer than
+        ``min_n`` rows are dropped first (their jumps are noise), then the biggest jump between
+        two still-adjacent remaining values is returned as (cut, jump_pts, rate_prev_pct, rate_at_pct)."""
         pts = [(value_fn(r), b) for r, b in zip(rows, b75) if value_fn(r) is not None]
+        agg: dict[float, list[int]] = defaultdict(lambda: [0, 0])
+        for v, b in pts:
+            agg[v][0] += 1
+            agg[v][1] += b
+        values = sorted(v for v, (n, _) in agg.items() if n >= min_n)
         best = None
-        for c in cuts:
-            kb = sum(b for v, b in pts if v < c); nb = sum(1 for v, _ in pts if v < c)
-            ka = sum(b for v, b in pts if v >= c); na = sum(1 for v, _ in pts if v >= c)
-            if nb < 100 or na < 100:
-                continue
-            ll = sum((k * math.log(k / m) + (m - k) * math.log(1 - k / m)) if 0 < k < m else 0.0
-                     for k, m in ((kb, nb), (ka, na)))
-            if best is None or ll > best[1]:
-                best = (c, ll, 100 * kb / nb, 100 * ka / na)
+        for prev, cur in zip(values, values[1:]):
+            n_prev, k_prev = agg[prev]
+            n_cur, k_cur = agg[cur]
+            rate_prev, rate_cur = k_prev / n_prev, k_cur / n_cur
+            jump = 100 * (rate_cur - rate_prev)
+            if best is None or abs(jump) > abs(best[1]):
+                best = (cur, jump, 100 * rate_prev, 100 * rate_cur)
         return best
 
     rating = lambda r: float(r["Agent_Rating"]) if _flag(r["agent_rating_valid_flag"]) else None
-    out["rating_best_cut"] = best_cut(rating, [round(x / 10, 1) for x in range(30, 51)])
-    out["age_best_cut"] = best_cut(lambda r: int(r["Agent_Age"]), list(range(21, 40)))
+    out["rating_best_cut"] = largest_single_step(rating)
+    out["age_best_cut"] = largest_single_step(lambda r: int(r["Agent_Age"]))
 
-    # model population: exclude Semi-Urban and unrated rows
+    # rating/age analysis population: exclude Semi-Urban (100% breach) and unrated rows
     pop = [(r, b) for r, b in zip(rows, b75) if r["Area"] != "Semi-Urban" and _flag(r["agent_rating_valid_flag"])]
-    out["model_population_rows"] = len(pop)
-    out["model_population_events"] = sum(b for _, b in pop)
+    out["analysis_population_rows"] = len(pop)
+    out["analysis_population_events"] = sum(b for _, b in pop)
 
     sunny = [t for r, t in zip(rows, times) if r["Weather"] == "Sunny"]
     adverse = [t for r, t in zip(rows, times) if r["Weather"] != "Sunny"]

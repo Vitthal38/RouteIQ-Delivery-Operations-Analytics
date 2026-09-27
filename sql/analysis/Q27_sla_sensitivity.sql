@@ -3,7 +3,7 @@
 -- Business question: the SLA is an analyst-defined benchmark (category-level P75, in-sample),
 -- so ~25% breach is expected by construction. What happens at P70 / P75 / P80 / P90?
 -- Thresholds are recomputed per category with PERCENTILE_CONT (linear interpolation = numpy
--- default = DAX PERCENTILE.INC). At P75 this reproduces the frozen flag exactly (Q30 checks it).
+-- default = DAX PERCENTILE.INC). At P75 this reproduces the frozen flag exactly (Q29 checks it).
 -- Output: overall, by traffic, by area, by rating group - for each percentile.
 -- =============================================================================
 SET search_path TO routeiq, public;

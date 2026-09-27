@@ -1,10 +1,10 @@
-"""Create the analytical view and run the new SQL analysis (Q23-Q30) against PostgreSQL.
+"""Create the analytical view and run the new SQL analysis (Q23-Q29) against PostgreSQL.
 
 Connection comes from the standard libpq environment variables (never stored in the repo):
     PGHOST (default localhost)  PGPORT (5432)  PGDATABASE (postgres)  PGUSER (postgres)  PGPASSWORD
 
 Usage:  python scripts/run_sql.py [--skip-view]
-Writes: outputs/sql_results/Qxx_*.csv   (Q29 is summarised, not dumped: 43k rows)
+Writes: outputs/sql_results/Qxx_*.csv
 """
 import argparse
 import os
@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from routeiq.config import SQL_RESULTS_DIR  # noqa: E402
 
-QUERIES = sorted((ROOT / "sql" / "analysis").glob("Q2[3-9]_*.sql")) + sorted((ROOT / "sql" / "analysis").glob("Q30_*.sql"))
+QUERIES = sorted((ROOT / "sql" / "analysis").glob("Q2[3-9]_*.sql"))
 
 
 def connect():
@@ -49,14 +49,7 @@ def main() -> int:
             cur.execute(path.read_text(encoding="utf-8"))
             df = to_frame(cur)
             out = SQL_RESULTS_DIR / f"{path.stem}.csv"
-            if path.stem.startswith("Q29"):
-                summary = {"rows": len(df), "events": int(df["y"].sum())}
-                for c in df.columns:
-                    if c not in ("order_id", "order_date", "hour_band"):
-                        summary[f"sum_{c}"] = float(df[c].sum())
-                pd.DataFrame([summary]).to_csv(out, index=False)
-            else:
-                df.to_csv(out, index=False)
+            df.to_csv(out, index=False)
             print(f"{path.stem}: {len(df)} rows -> {out.name}")
     return 0
 

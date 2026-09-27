@@ -11,5 +11,5 @@ id,check_name,expected,actual,status
 10,on-time % + breach % = 100,100.0,100.0,PASS
 11,"valid ratings = 43,594 (54 rows have none)",43594.0,43594.0,PASS
 12,"Semi-Urban: 152 deliveries, all breach",152.0,152.0,PASS
-13,"model population (Q29 filter) = 43,442 rows",43442.0,43442.0,PASS
+13,"rating/age analysis population (excl. Semi-Urban and unrated rows) = 43,442 rows",43442.0,43442.0,PASS
 14,peak-hour flag = hours 17-23 only,0.0,0.0,PASS

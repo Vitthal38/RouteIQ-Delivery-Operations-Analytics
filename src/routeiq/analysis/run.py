@@ -17,7 +17,6 @@ from routeiq.config import (
     ensure_directory_structure,
 )
 from routeiq.features.analytical import save_analytical_dataset
-from routeiq.modeling.driver_model import main_effect_summary, run_driver_models
 from routeiq.statistics.tests import test_register
 
 
@@ -109,15 +108,17 @@ def run_all(verbose: bool = True) -> dict:
     as_ = thresholds.scan_cutpoints(df, "agent_age", list(range(21, 40)))
     _save(rs, "rating_cut_scan", tables)
     _save(as_, "age_cut_scan", tables)
-    _save(thresholds.step_vs_linear(df, "agent_rating", RATING_THRESHOLD), "rating_step_vs_linear", tables)
-    _save(thresholds.step_vs_linear(df, "agent_age", AGE_THRESHOLD), "age_step_vs_linear", tables)
+    rating_step = thresholds.largest_single_step(df, "agent_rating")
+    age_step = thresholds.largest_single_step(df, "agent_age")
+    R["rating_shape"] = rating_step
+    R["age_shape"] = age_step
     _save(thresholds.rating_age_grid(df), "rating_age_grid", tables)
     _save(thresholds.effect_by_traffic(df, "rating_lt_4_5"), "rating_effect_by_traffic", tables)
     _save(thresholds.effect_by_traffic(df, "age_ge_30"), "age_effect_by_traffic", tables)
-    R["rating"] = {"best_cut": float(rs.loc[rs["is_best_cut"], "cut"].iloc[0]),
+    R["rating"] = {"best_cut": rating_step["cut"],
                    "stratified_by_traffic_x_area": thresholds.stratified_effect(df, "rating_lt_4_5", ["traffic", "area"]),
                    "stratified_by_traffic_x_weather": thresholds.stratified_effect(df, "rating_lt_4_5", ["traffic", "weather"])}
-    R["age"] = {"best_cut": float(as_.loc[as_["is_best_cut"], "cut"].iloc[0]),
+    R["age"] = {"best_cut": age_step["cut"],
                 "stratified_by_traffic_x_area": thresholds.stratified_effect(df, "age_ge_30", ["traffic", "area"]),
                 "stratified_by_traffic_x_weather": thresholds.stratified_effect(df, "age_ge_30", ["traffic", "weather"])}
     lo = df[df["rating_lt_4_5"] == 1]
@@ -132,14 +133,15 @@ def run_all(verbose: bool = True) -> dict:
     _save(reg, "statistical_test_register", tables)
     log("Test register done")
 
-    # ---- Driver models -------------------------------------------------------
-    dm = run_driver_models(df)
-    for name, t in dm["tables"].items():
-        _save(t, f"model_{name}", tables)
-    R["driver_model"] = {k: dm[k] for k in ("info", "holdout", "lr_tests", "influence", "class_balance",
-                                            "robustness_grocery_flag")}
-    R["driver_model"]["odds_ratios_A"] = main_effect_summary(dm["fits"]["A"][0])
-    log("Driver models done")
+    # ---- Rating/age analysis population (descriptive; excludes Semi-Urban and unrated rows) ----
+    pop = df[(df["area"] != "Semi-Urban") & df["rating_lt_4_5"].notna()]
+    R["rating_age_analysis_population"] = {
+        "n_total": len(df), "excluded_semi_urban": int((df["area"] == "Semi-Urban").sum()),
+        "excluded_missing_rating": int(df["rating_lt_4_5"].isna().sum()), "n_analysis": len(pop),
+        "n_events": int(pop["breach_flag"].sum()),
+        "note": "Excluded so a 100%-breach group (Semi-Urban) and missing ratings do not distort rate comparisons.",
+    }
+    log("Analysis population done")
 
     # ---- SLA sensitivity -----------------------------------------------------
     ov = sla_sensitivity.overall_table(df)
@@ -150,7 +152,6 @@ def run_all(verbose: bool = True) -> dict:
     _save(sla_sensitivity.ranking_stability(seg), "sla_sensitivity_ranking_stability", tables)
     drv = sla_sensitivity.driver_stability(df)
     _save(drv, "sla_sensitivity_driver_risk_ratios", tables)
-    _save(sla_sensitivity.model_or_stability(df), "sla_sensitivity_model_odds_ratios", tables)
     _save(sla_sensitivity.semi_urban_by_percentile(df), "sla_sensitivity_semi_urban", tables)
     R["sla_sensitivity"] = {"overall": ov}
     log("SLA sensitivity done")
@@ -176,18 +177,18 @@ def run_all(verbose: bool = True) -> dict:
     figures.hour_profile_plot(hp, F / "hour_profile.png")
     figures.traffic_hour_heatmap(df, F / "traffic_hour_heatmap.png")
     figures.traffic_weather_heatmap(df, F / "traffic_weather_heatmap.png")
-    figures.forest_plot(dm["tables"]["coef_A"], F / "driver_forest_model_a.png")
+    rr75 = drv[drv["percentile"] == 0.75].rename(columns={"contrast": "label"})
+    figures.risk_ratio_plot(rr75, F / "risk_ratios_by_factor.png")
     figures.sensitivity_plot(ov, drv, F / "sla_sensitivity.png")
     figures.pareto_plot(pareto, F / "pareto_area_traffic.png")
     figures.scenario_plot(sc, F / "scenarios.png")
-    figures.calibration_plot(dm["tables"]["calibration_A"], F / "calibration_model_a.png")
     log("Figures done")
 
     RESULTS_JSON.parent.mkdir(parents=True, exist_ok=True)
     with open(RESULTS_JSON, "w", encoding="utf-8") as f:
         json.dump(_clean(R), f, indent=2)
     log(f"Wrote {RESULTS_JSON}")
-    return {"results": R, "tables": tables, "models": dm, "df": df}
+    return {"results": R, "tables": tables, "df": df}
 
 
 if __name__ == "__main__":

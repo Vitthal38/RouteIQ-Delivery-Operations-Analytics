@@ -14,7 +14,7 @@ from scipy import stats
 
 from routeiq.analysis.segments import association
 from routeiq.statistics.effects import (
-    auc_mann_whitney, cohens_d, kruskal_epsilon_squared, odds_ratio,
+    probability_of_superiority, cohens_d, kruskal_epsilon_squared, odds_ratio,
     risk_difference, risk_ratio,
 )
 
@@ -105,7 +105,7 @@ def test_register(df: pd.DataFrame) -> pd.DataFrame:
     def two_group(tid, question, a, b, label, meaning, limitation):
         x, y = a["delivery_time_minutes"].to_numpy(float), b["delivery_time_minutes"].to_numpy(float)
         dcoh, dlo, dhi = cohens_d(x, y)
-        auc = auc_mann_whitney(x, y)
+        pos = probability_of_superiority(x, y)
         u_p = stats.mannwhitneyu(x, y, alternative="two-sided")[1]
         # Welch CI for the mean difference. (A bootstrap CI for the median difference collapses to a
         # single value here because delivery times are multiples of 5, so it is not informative.)
@@ -120,7 +120,7 @@ def test_register(df: pd.DataFrame) -> pd.DataFrame:
             "key_assumptions": "Independent observations; groups defined before looking at outcomes (except data-driven cuts, flagged).",
             "effect_size_name": "Cohen's d", "effect_size": dcoh,
             "effect_band": "negligible" if abs(dcoh) < 0.2 else "small" if abs(dcoh) < 0.5 else "medium" if abs(dcoh) < 0.8 else "large",
-            "headline_contrast": f"{label}: mean difference {diff:+.1f} min (95% CI {lo:+.1f} to {hi:+.1f}); median difference {med:+.0f} min; AUC {auc:.2f}",
+            "headline_contrast": f"{label}: mean difference {diff:+.1f} min (95% CI {lo:+.1f} to {hi:+.1f}); median difference {med:+.0f} min; probability of superiority {pos:.2f}",
             "rate_group": np.nan, "rate_reference": np.nan, "risk_diff_pts": np.nan, "risk_ratio": np.nan,
             "ci_low": dlo, "ci_high": dhi, "p_value": u_p, "n": len(x) + len(y),
             "practical_meaning": meaning, "limitations": limitation})

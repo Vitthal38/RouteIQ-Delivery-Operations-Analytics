@@ -1,44 +1,34 @@
 -- =============================================================================
--- Q26 - Is the agent-age relationship gradual or a step? (attribute-level only)
--- Business question: does breach risk change gradually with age, or at one age?
--- Same method as Q25 (candidate cuts ranked by step-model log-likelihood).
--- On this data the best cut is age 30; a step at a round number is unusual for real
--- workforce data (see docs/limitations.md, "Data realism").
+-- Q26 - Is the agent-age relationship gradual, or a step? (attribute-level only)
+-- Business question: at what age, if any, does breach rate suddenly change?
+-- Same LAG()-based adjacent-jump method as Q25. On this data the step is at age 30; a change at
+-- one exact round number is unusual for a real workforce (see docs/limitations.md, "Data realism").
 -- =============================================================================
 SET search_path TO routeiq, public;
 
-WITH cuts AS (
-    SELECT generate_series(21, 39) AS cut
+WITH by_age AS (
+    SELECT agent_age,
+           COUNT(*)         AS n,
+           SUM(breach_flag) AS breaches
+    FROM routeiq.vw_analytical_deliveries
+    GROUP BY agent_age
+    HAVING COUNT(*) >= 100
 ),
-agg AS (
-    SELECT c.cut,
-           COUNT(*) FILTER (WHERE v.agent_age <  c.cut)                 AS n_below,
-           SUM(v.breach_flag) FILTER (WHERE v.agent_age <  c.cut)       AS k_below,
-           COUNT(*) FILTER (WHERE v.agent_age >= c.cut)                 AS n_above,
-           SUM(v.breach_flag) FILTER (WHERE v.agent_age >= c.cut)       AS k_above
-    FROM cuts c CROSS JOIN routeiq.vw_analytical_deliveries v
-    GROUP BY c.cut
+with_rate AS (
+    SELECT agent_age, n, breaches, breaches::float8 / n AS breach_rate
+    FROM by_age
 ),
-scored AS (
-    SELECT *,
-           k_below::float8 / n_below AS rate_below,
-           k_above::float8 / n_above AS rate_above,
-           CASE WHEN k_below IN (0, n_below) THEN 0
-                ELSE k_below * LN(k_below::float8 / n_below) + (n_below - k_below) * LN(1 - k_below::float8 / n_below) END
-         + CASE WHEN k_above IN (0, n_above) THEN 0
-                ELSE k_above * LN(k_above::float8 / n_above) + (n_above - k_above) * LN(1 - k_above::float8 / n_above) END
-           AS loglik_step_model
-    FROM agg
-    WHERE n_below >= 100 AND n_above >= 100
+with_jump AS (
+    SELECT agent_age,
+           n,
+           ROUND((100 * breach_rate)::numeric, 4)                                   AS breach_rate_pct,
+           LAG(agent_age)      OVER (ORDER BY agent_age)                            AS prev_age,
+           LAG(n)              OVER (ORDER BY agent_age)                            AS prev_n,
+           ROUND((100 * LAG(breach_rate) OVER (ORDER BY agent_age))::numeric, 4)    AS prev_breach_rate_pct,
+           ROUND((100 * (breach_rate - LAG(breach_rate) OVER (ORDER BY agent_age)))::numeric, 4) AS jump_pts
+    FROM with_rate
 )
-SELECT cut,
-       n_below,
-       n_above                                             AS n_at_or_above,
-       ROUND((100 * rate_below)::numeric, 4)               AS breach_rate_below_pct,
-       ROUND((100 * rate_above)::numeric, 4)               AS breach_rate_at_or_above_pct,
-       ROUND((100 * (rate_below - rate_above))::numeric, 4) AS risk_diff_pts,
-       ROUND((rate_below / NULLIF(rate_above, 0))::numeric, 4) AS risk_ratio,
-       ROUND(loglik_step_model::numeric, 2)                AS loglik_step_model,
-       RANK() OVER (ORDER BY loglik_step_model DESC)       AS step_rank
-FROM scored
-ORDER BY cut;
+SELECT agent_age, n, prev_age, prev_n, prev_breach_rate_pct, breach_rate_pct, jump_pts,
+       RANK() OVER (ORDER BY ABS(jump_pts) DESC NULLS LAST) AS step_rank
+FROM with_jump
+ORDER BY agent_age;

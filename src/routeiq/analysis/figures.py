@@ -105,19 +105,24 @@ def traffic_weather_heatmap(df: pd.DataFrame, path: Path) -> Path:
     return _save(fig, path)
 
 
-def forest_plot(coef: pd.DataFrame, path: Path, title: str = "Odds of SLA breach (Model A)") -> Path:
+def risk_ratio_plot(rows: pd.DataFrame, path: Path,
+                    title: str = "Breach risk ratio by factor (each vs. its reference level)") -> Path:
+    """Dot-and-whisker plot of plain risk ratios (exposed rate / reference rate) with 95% CI.
+
+    ``rows`` needs columns: label, risk_ratio, rr_ci_low, rr_ci_high. This is a descriptive
+    comparison on one common scale, not a fitted statistical model.
+    """
     apply_theme()
-    c = coef[coef["term"] != "const"].copy()
-    c = c.iloc[::-1]
-    fig, ax = plt.subplots(figsize=(8, 0.42 * len(c) + 1.5))
+    c = rows.iloc[::-1]
+    fig, ax = plt.subplots(figsize=(8, 0.5 * len(c) + 1.5))
     y = np.arange(len(c))
-    ax.errorbar(c["odds_ratio"], y, xerr=[c["odds_ratio"] - c["or_ci_low_clustered"], c["or_ci_high_clustered"] - c["odds_ratio"]],
+    ax.errorbar(c["risk_ratio"], y, xerr=[c["risk_ratio"] - c["rr_ci_low"], c["rr_ci_high"] - c["risk_ratio"]],
                 fmt="o", color=NAVY, ecolor=GRID, capsize=2)
     ax.axvline(1, color=CORAL, ls="--", lw=1.2)
     ax.set_xscale("log")
-    ax.set_yticks(y, c["term"])
-    ax.set_xlabel("Odds ratio (log scale; 95% CI clustered by order date)")
-    ax.set_title(title)
+    ax.set_yticks(y, c["label"])
+    ax.set_xlabel("Risk ratio (log scale; 95% CI)")
+    ax.set_title(title, loc="left")
     return _save(fig, path)
 
 
@@ -135,7 +140,7 @@ def sensitivity_plot(overall: pd.DataFrame, drivers: pd.DataFrame, path: Path) -
     a2.set_yscale("log")
     a2.set_ylabel("Risk ratio (log scale)")
     a2.set_title("Do the driver contrasts survive a different SLA?")
-    a2.legend(fontsize=8, loc="upper right", ncol=1)
+    a2.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
     return _save(fig, path)
 
 
@@ -157,24 +162,13 @@ def pareto_plot(p: pd.DataFrame, path: Path) -> Path:
 
 def scenario_plot(sc: pd.DataFrame, path: Path) -> Path:
     apply_theme()
-    fig, ax = plt.subplots(figsize=(9, 3.4))
+    fig, ax = plt.subplots(figsize=(8, 3.2))
     y = np.arange(len(sc))
-    ax.barh(y + 0.18, sc["raw_reduction_pct_of_all_breaches"], 0.34, color=CORAL, label="Raw rate difference x volume")
-    ax.barh(y - 0.18, sc["model_adjusted_pct_of_all_breaches"], 0.34, color=NAVY, label="Model-adjusted (Model C)")
+    ax.barh(y, sc["reduction_pct_of_all_breaches"], 0.5, color=CORAL)
+    for yi, v in zip(y, sc["reduction_pct_of_all_breaches"]):
+        ax.text(v + 0.5, yi, f"{v:.1f}%", va="center", fontsize=9)
     ax.set_yticks(y, [s.split(" breach rate")[0] for s in sc["scenario"]])
     ax.invert_yaxis()
-    ax.set_xlabel("Theoretical reduction, % of all breaches")
-    ax.set_title("Illustrative scenarios (not causal forecasts)")
-    ax.legend(loc="lower right")
-    return _save(fig, path)
-
-
-def calibration_plot(cal: pd.DataFrame, path: Path) -> Path:
-    apply_theme()
-    fig, ax = plt.subplots(figsize=(4.6, 4.6))
-    ax.plot([0, 1], [0, 1], color=GRID, lw=1.5)
-    ax.plot(cal["mean_predicted"], cal["observed_rate"], "o-", color=NAVY)
-    ax.set_xlabel("Mean predicted breach probability")
-    ax.set_ylabel("Observed breach rate")
-    ax.set_title("Calibration by decile (Model A)")
+    ax.set_xlabel("Theoretical reduction, % of all breaches (rate difference x volume)")
+    ax.set_title("Illustrative scenarios (not causal forecasts)", loc="left")
     return _save(fig, path)

@@ -15,7 +15,6 @@ from scipy import stats
 
 from routeiq.analysis.segments import segment_table
 from routeiq.config import SLA_SENSITIVITY_PERCENTILES
-from routeiq.modeling.driver_model import SPECS, fit_spec, prepare_model_frame
 from routeiq.statistics.effects import risk_ratio
 
 
@@ -115,21 +114,6 @@ def driver_stability(df: pd.DataFrame) -> pd.DataFrame:
             rr, lo, hi = risk_ratio(a["breach_flag"].sum(), len(a), b["breach_flag"].sum(), len(b))
             rows.append({"percentile": p, "contrast": label, "rate_exposed": a["breach_flag"].mean(),
                          "rate_reference": b["breach_flag"].mean(), "risk_ratio": rr, "rr_ci_low": lo, "rr_ci_high": hi})
-    return pd.DataFrame(rows)
-
-
-def model_or_stability(df: pd.DataFrame) -> pd.DataFrame:
-    """Refit Model A with the breach definition at each percentile; compare key odds ratios."""
-    rows = []
-    for p in SLA_SENSITIVITY_PERCENTILES:
-        frame, info = prepare_model_frame(df.assign(breach_flag=breach_at(df, p)))
-        res, X, groups = fit_spec(frame, SPECS["A"], cluster=False)
-        t = res.table().set_index("term")
-        for term in ("traffic[Jam]", "traffic[Medium]", "traffic[High]", "weather[Fog]", "weather[Cloudy]",
-                     "rating_lt_4_5", "age_ge_30", "vehicle[scooter]", "vehicle[van]", "prep_per_5min"):
-            r = t.loc[term]
-            rows.append({"percentile": p, "term": term, "odds_ratio": r["odds_ratio"], "or_ci_low": r["or_ci_low"],
-                         "or_ci_high": r["or_ci_high"], "n_events": info["n_events"]})
     return pd.DataFrame(rows)
 
 

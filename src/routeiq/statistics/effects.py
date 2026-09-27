@@ -144,8 +144,10 @@ def cohens_d(x: np.ndarray, y: np.ndarray) -> tuple[float, float, float]:
     return d, d - Z95 * se, d + Z95 * se
 
 
-def auc_mann_whitney(x: np.ndarray, y: np.ndarray) -> float:
-    """Probability that a random x exceeds a random y (ties count half)."""
+def probability_of_superiority(x: np.ndarray, y: np.ndarray) -> float:
+    """Probability of superiority (common-language effect size): P(random x > random y), ties count
+    half. A standard, model-free effect size for a two-group rank comparison - the same quantity
+    the Mann-Whitney U statistic is built from (U / (n_x * n_y))."""
     x, y = np.asarray(x, float), np.asarray(y, float)
     ranks = stats.rankdata(np.concatenate([x, y]))
     u = ranks[: len(x)].sum() - len(x) * (len(x) + 1) / 2

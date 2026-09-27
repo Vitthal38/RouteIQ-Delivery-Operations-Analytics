@@ -1,9 +1,11 @@
-"""Agent rating and age: is the relationship linear, or a step?
+"""Agent rating and age: is the relationship a gradual slope, or a step?
 
 Correlation coefficients (r, r-squared) describe a *linear* relationship. For an
 ordinal attribute that behaves like a step (low below a cut, high above it) they
-understate the effect badly. This module looks at the shape directly: breach rate
-by exact value, a scan over candidate cut points, and step-vs-linear model fit.
+understate the effect badly. This module looks at the shape directly, using only
+descriptive comparisons (breach rate by exact value, a scan over candidate cut
+points scored by percentage-point gap, and stratified rate comparisons) -
+no statistical model is fitted.
 """
 
 from __future__ import annotations
@@ -11,7 +13,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from routeiq.modeling.logit import fit_logit
 from routeiq.statistics.effects import (
     mantel_haenszel_or, mantel_haenszel_rr, risk_difference, risk_ratio, wilson_ci,
 )
@@ -27,15 +28,14 @@ def exact_value_table(df: pd.DataFrame, col: str) -> pd.DataFrame:
     return g
 
 
-def _ll(k: float, n: float) -> float:
-    if n == 0 or k in (0, n):
-        return 0.0
-    p = k / n
-    return k * np.log(p) + (n - k) * np.log(1 - p)
-
-
 def scan_cutpoints(df: pd.DataFrame, col: str, candidates: list[float]) -> pd.DataFrame:
-    """For each cut c: compare breach rate below (< c) vs at/above (>= c); rank by step-model likelihood."""
+    """For each candidate cut c: breach rate below (< c) vs at/above (>= c).
+
+    This is a SENSITIVITY table, not a way to locate the step: many nearby cuts across a wide,
+    noisy-but-uniformly-high plateau can all show a similarly large two-group gap. The actual step
+    location is found separately, from the single largest jump between adjacent exact values
+    (see ``largest_single_step``). Cuts with fewer than 100 deliveries on either side are skipped.
+    """
     sub = df.dropna(subset=[col])
     rows = []
     for c in candidates:
@@ -48,31 +48,34 @@ def scan_cutpoints(df: pd.DataFrame, col: str, candidates: list[float]) -> pd.Da
         rows.append({"cut": c, "n_below": nb, "n_at_or_above": na,
                      "rate_below": kb / nb, "rate_at_or_above": ka / na,
                      "risk_diff_pts": 100 * rd, "rd_ci_low_pts": 100 * rd_lo, "rd_ci_high_pts": 100 * rd_hi,
-                     "risk_ratio": rr, "rr_ci_low": rr_lo, "rr_ci_high": rr_hi,
-                     "loglik_step_model": _ll(kb, nb) + _ll(ka, na)})
-    out = pd.DataFrame(rows)
-    out["is_best_cut"] = out["loglik_step_model"] == out["loglik_step_model"].max()
-    return out
+                     "risk_ratio": rr, "rr_ci_low": rr_lo, "rr_ci_high": rr_hi})
+    return pd.DataFrame(rows)
 
 
-def step_vs_linear(df: pd.DataFrame, col: str, cut: float) -> pd.DataFrame:
-    """Compare a linear-logit term with a step at ``cut`` (AIC; lower is better)."""
-    sub = df.dropna(subset=[col]).copy()
-    y = sub["breach_flag"].to_numpy()
-    sub["_step"] = (sub[col] >= cut).astype(float)
-    models = {
-        "linear in value": ["const", col],
-        f"step at {cut:g}": ["const", "_step"],
-        f"step at {cut:g} + linear": ["const", "_step", col],
+def largest_single_step(df: pd.DataFrame, col: str, min_n: int = 100) -> dict:
+    """Where is the sharpest single jump in breach rate between two adjacent exact values?
+
+    Values with fewer than ``min_n`` deliveries are dropped first (their jumps are noise, not
+    signal), then the biggest jump between two values that remain NEXT TO EACH OTHER in the
+    original sorted order is reported. This directly answers "where is the step", which a
+    two-group cutpoint scan cannot: many splits across a flat-but-noisy plateau can all look
+    similarly good, only the single adjacent-value jump pinpoints where the rate actually moves.
+    """
+    t = exact_value_table(df, col).sort_values("value").reset_index(drop=True)
+    reliable = t[t["n"] >= min_n].reset_index(drop=True)
+    gaps = reliable["breach_rate"].diff()
+    idx = gaps.abs().idxmax()
+    return {
+        "column": col, "cut": float(reliable.loc[idx, "value"]),
+        "value_below": float(reliable.loc[idx - 1, "value"]), "value_at_cut": float(reliable.loc[idx, "value"]),
+        "rate_below": float(reliable.loc[idx - 1, "breach_rate"]), "rate_at_cut": float(reliable.loc[idx, "breach_rate"]),
+        "n_below": int(reliable.loc[idx - 1, "n"]), "n_at_cut": int(reliable.loc[idx, "n"]),
+        "step_size_pts": 100 * float(gaps.loc[idx]),
+        "typical_other_step_pts": 100 * float(gaps.drop(index=idx).abs().median()),
+        "n_reliable_values": len(reliable), "n_values_dropped_for_small_n": len(t) - len(reliable),
     }
-    sub["const"] = 1.0
-    rows = []
-    for name, cols in models.items():
-        r = fit_logit(sub[cols], y)
-        rows.append({"model": name, "aic": r.aic, "loglik": r.loglik, "mcfadden_r2": r.mcfadden_r2})
-    out = pd.DataFrame(rows)
-    out["delta_aic_vs_best"] = out["aic"] - out["aic"].min()
-    return out
+
+
 
 
 def stratified_effect(df: pd.DataFrame, flag_col: str, strata: list[str]) -> dict[str, float]:

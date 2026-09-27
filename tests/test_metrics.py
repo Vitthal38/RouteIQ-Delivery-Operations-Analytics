@@ -70,10 +70,10 @@ def test_mantel_haenszel_equals_crude_when_strata_identical():
     assert rr == pytest.approx(3.0)
 
 
-def test_cohens_d_and_auc():
+def test_cohens_d_and_probability_of_superiority():
     rng = np.random.default_rng(0)
     x, y = rng.normal(1, 1, 5000), rng.normal(0, 1, 5000)
     d, lo, hi = fx.cohens_d(x, y)
     assert d == pytest.approx(1.0, abs=0.06) and lo < d < hi
-    assert fx.auc_mann_whitney(x, y) == pytest.approx(0.76, abs=0.02)  # AUC = Phi(d / sqrt 2)
-    assert fx.auc_mann_whitney(y, y) == pytest.approx(0.5, abs=1e-9)
+    assert fx.probability_of_superiority(x, y) == pytest.approx(0.76, abs=0.02)  # Phi(d / sqrt 2)
+    assert fx.probability_of_superiority(y, y) == pytest.approx(0.5, abs=1e-9)

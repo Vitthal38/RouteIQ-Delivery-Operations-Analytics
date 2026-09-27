@@ -1,5 +1,5 @@
 -- =============================================================================
--- Q30 - Are the numbers behind the dashboard internally consistent?
+-- Q29 - Are the numbers behind the dashboard internally consistent?
 -- Business question: before anyone reads a KPI, do the cuts add up to the totals, and does the
 -- stored SLA flag equal a fresh recomputation? Each row is one check with PASS/FAIL.
 -- This is CROSS-LAYER RECONCILIATION (SQL vs itself and vs frozen figures), not proof that the
@@ -42,7 +42,7 @@ checks AS (
            43594::numeric, (SELECT COUNT(agent_rating) FROM v)::numeric
     UNION ALL SELECT 12, 'Semi-Urban: 152 deliveries, all breach',
            152::numeric, (SELECT COUNT(*) FROM v WHERE area = 'Semi-Urban' AND breach_flag = 1)::numeric
-    UNION ALL SELECT 13, 'model population (Q29 filter) = 43,442 rows',
+    UNION ALL SELECT 13, 'rating/age analysis population (excl. Semi-Urban and unrated rows) = 43,442 rows',
            43442::numeric, (SELECT COUNT(*) FROM v WHERE area <> 'Semi-Urban' AND rating_lt_4_5 IS NOT NULL)::numeric
     UNION ALL SELECT 14, 'peak-hour flag = hours 17-23 only',
            0::numeric, (SELECT COUNT(*) FROM v WHERE (is_peak_hour = 1) <> (order_hour BETWEEN 17 AND 23))::numeric
