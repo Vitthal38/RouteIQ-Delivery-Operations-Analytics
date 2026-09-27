@@ -17,10 +17,12 @@ next to the report file itself.
 ## Current state vs. target
 
 `powerbi/RouteIQ_v1.pbix` is a 4-page report already built and screenshotted
-(`powerbi/screenshots/`). It has not yet been rebuilt to the 5-page structure above — `powerbi/README.md`
-lists exactly what's open (a missing P90 card, a rounding display issue, static callout text, no
-drillthrough or tooltip pages) and gives the exact measures and steps to close each gap in Power BI
-Desktop.
+(`powerbi/screenshots/`). It has not yet been rebuilt to the 5-page structure above. The P90 KPI card
+and the breach-rate rounding display have been fixed since the initial build; `powerbi/README.md`'s
+"Known issues" list tracks everything still open, in priority order. The most important open item is
+not cosmetic: the "Agent Performance" page still reports rating/age via a linear correlation labelled
+"weak," which contradicts this project's corrected finding (`docs/limitations.md`, "known, disclosed
+discrepancy" section) — fix that before any of the remaining polish items.
 
 ## Principles carried into every page
 
