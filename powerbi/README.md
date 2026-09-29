@@ -12,35 +12,30 @@ not safely be edited directly. What follows is the exact, ready-to-apply spec fo
 measure, every page's content, and the click-by-click steps for the parts (drillthrough, tooltip pages,
 a What-If parameter, dynamic text) that a hands-on session in Desktop needs to add.
 
-**Fixed** (as of the latest hands-on Desktop pass): P90 KPI card added to Page 1; breach rate now
-displays "23.66%" (not "24%") on Page 1's card and Page 2's matrix; Page 4's traffic chart now shows
-sample size per bar (`n=13,725` etc.).
+**Fixed** (as of the latest hands-on Desktop passes, each verified by diffing the `.pbix` internals, not
+just a visual check): P90 KPI card added to Page 1; breach rate now displays "23.66%" (not "24%") on
+Page 1's card and Page 2's matrix; Page 4's traffic chart now shows sample size per bar (`n=13,725`
+etc.); Page 3 "Agent Performance" no longer contradicts the project's corrected rating/age finding — the
+Spearman/Pearson/R² "[WEAK ASSOCIATION]" callouts were replaced with the actual step finding (63.2%
+breach at 4.4 vs. 10.5% at 4.5, Mantel–Haenszel risk ratio 3.69), matching
+[`docs/recommendations.md`](../docs/recommendations.md) #1 and
+[`docs/analytical_findings.md`](../docs/analytical_findings.md) §2–3.
 
 **Still open, in priority order:**
-1. **Page 3 "Agent Performance" contradicts the project's own corrected finding.** It still shows
-   Spearman R = -0.26, Pearson R = 0.26, R² ≈ 0.068, and text labeled "[WEAK ASSOCIATION]" / "Agent
-   rating is weakly associated with delivery time." This directly contradicts
-   [`docs/recommendations.md`](../docs/recommendations.md) #1 and
-   [`docs/analytical_findings.md`](../docs/analytical_findings.md) §2–3, which establish rating as a
-   **step** (63.2% breach at 4.4 vs. 10.5% at 4.5, Mantel–Haenszel risk ratio 3.69), not a weak linear
-   correlation. This is the single highest-priority fix — an interviewer who reads the docs and then
-   opens the dashboard will see the two flatly disagree. Fix: replace the correlation/R² textboxes with
-   the step finding (exact replacement text in the project's session notes); optionally add a table
-   bound to the raw `agent_rating` value (not the 0.5-wide band) to show the 4.4→4.5 boundary directly.
-2. Missing sample size (`n`) on the Page 1 and Page 2 "SLA Breach Rate % by Area" bar charts (Page 4's
+1. Missing sample size (`n`) on the Page 1 and Page 2 "SLA Breach Rate % by Area" bar charts (Page 4's
    traffic chart already does this correctly — copy that pattern).
-3. Clipped text: a sentence on Page 2 ("...small per-category samples (5–14 deliveries each") is cut off
+2. Clipped text: a sentence on Page 2 ("...small per-category samples (5–14 deliveries each") is cut off
    with no closing punctuation; Page 4's weather-chart axis labels are clipped
    ("`Fog (n=7,4...`") — move `n` to the tooltip instead of the axis label.
-4. Page 1's delivery-time trend line still uses default Power BI blue instead of the navy/teal palette.
-5. Page 1's "On-Time Delivery Rate" card shows "76.34" with no `%`, inconsistent with the adjacent SLA
+3. Page 1's delivery-time trend line still uses default Power BI blue instead of the navy/teal palette.
+4. Page 1's "On-Time Delivery Rate" card shows "76.34" with no `%`, inconsistent with the adjacent SLA
    Breach Rate card's "23.66%".
-6. Page 2's "Select an area to continue to Delay Root Cause →" implies a working drillthrough — verify
-   it's actually wired up (Format → Drillthrough) before keeping the text; if not, remove the line rather
-   than promise an interaction the report doesn't have.
-7. Static (non-dynamic) callout text throughout, no tooltip pages, no What-If SLA parameter, still a
+5. Page 2's "Select an area to continue to Delay Root Cause →" implies a working drillthrough — verified
+   as not wired up (no drillthrough config exists anywhere in the file). Either build it (Format →
+   Drillthrough) or remove the line rather than promise an interaction the report doesn't have.
+6. Static (non-dynamic) callout text throughout, no tooltip pages, no What-If SLA parameter, still a
    4-page not 5-page structure — see the "Target: 5 pages" spec below.
-8. One Pareto label where a tie may show a duplicated cumulative percentage (documented in
+7. One Pareto label where a tie may show a duplicated cumulative percentage (documented in
    `docs/limitations.md`) — needs re-verification against the current file; likely a legitimate rounding
    artifact in the long tail rather than the original tie bug, but not yet confirmed either way.
 

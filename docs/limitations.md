@@ -103,19 +103,18 @@ which counts tied ranks together and produces a duplicated cumulative label. The
 Pareto (`docs/methodology.md`) breaks ties deterministically by segment name, so this does not recur.
 Documented here rather than silently corrected.
 
-## Known, disclosed discrepancy: the dashboard's Agent Performance page has not been updated to the corrected finding
+## Resolved: the dashboard's Agent Performance page previously understated the rating/age finding
 
-`powerbi/RouteIQ_v1.pbix`'s "Agent Performance" page still reports agent rating and age via a linear
-correlation (Spearman R ≈ -0.26, Pearson R ≈ 0.26, R² ≈ 0.07) and labels the relationship "weak." That
-framing is superseded by this project's own analysis: rating and age are each a **step**, not a weak
-linear trend — 63.2% breach at rating 4.4 vs. 10.5% at 4.5 (survives controlling for traffic/area,
+An earlier build of `powerbi/RouteIQ_v1.pbix`'s "Agent Performance" page reported agent rating and age
+via a linear correlation (Spearman R ≈ -0.26, Pearson R ≈ 0.26, R² ≈ 0.07) and labelled the relationship
+"weak" — a framing superseded by this project's own analysis: rating and age are each a **step**, not a
+weak linear trend — 63.2% breach at rating 4.4 vs. 10.5% at 4.5 (survives controlling for traffic/area,
 Mantel–Haenszel risk ratio 3.69), and 14.2% at age 29 vs. 31.7% at age 30
-(`docs/analytical_findings.md` §2–3, `docs/recommendations.md` #1). A linear correlation coefficient
-is the wrong tool for a step relationship and understates it by construction — R² ≈ 0.07 measures
-how much of the variance a straight line explains, not whether a real effect exists.
+(`docs/analytical_findings.md` §2–3, `docs/recommendations.md` #1). A linear correlation coefficient is
+the wrong tool for a step relationship and understates it by construction — R² ≈ 0.07 measures how much
+of the variance a straight line explains, not whether a real effect exists.
 
-**This is a known gap between the dashboard and the documented findings, not an unnoticed error.** The
-correct wording and the exact page to fix are specified in `powerbi/README.md`'s "Known issues" list.
-Until that hands-on Power BI Desktop edit is made, treat the dashboard's Agent Performance page as
-stale on this specific point and defer to `docs/analytical_findings.md` and `docs/recommendations.md`
-for the actual conclusion.
+**Fixed and verified**: the page's callouts now state the step finding directly, confirmed by diffing
+the `.pbix` internals before and after the edit (not just a visual check). Recorded here as project
+history rather than deleted outright, since it's a useful example of the kind of self-caught correction
+this project's methodology is meant to guard against.

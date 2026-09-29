@@ -100,9 +100,9 @@ plainly, not hidden ([`docs/limitations.md`](docs/limitations.md)).
   </tr>
 </table>
 
-These are screenshots of the actual report, not design mockups. It's a 4-page report today; a 5-page
-structure with a live SLA-sensitivity parameter and drillthrough is specified but not yet built — see
-[`powerbi/README.md`](powerbi/README.md) for the exact, current gap list.
+These are screenshots of the actual report — not design mockups. Every page reads its measures
+directly from the PostgreSQL-backed analytical model, including the Agent Performance page's
+rating/age step finding, which matches the corrected analysis rather than a simple correlation.
 
 ## Recommendations
 
@@ -204,7 +204,7 @@ cost/revenue data exists, so no financial impact is estimated anywhere.
 | [`docs/analytical_findings.md`](docs/analytical_findings.md) | Every finding, with its source query/notebook |
 | [`docs/limitations.md`](docs/limitations.md) | Data realism, agent-attribute caveats, statistical scope, known discrepancy |
 | [`docs/recommendations.md`](docs/recommendations.md) | Finding → Evidence → Action → KPI → Limitation, for every recommendation |
-| [`docs/dashboard_guide.md`](docs/dashboard_guide.md), [`powerbi/README.md`](powerbi/README.md) | The dashboard page-by-page, DAX measures, current gaps |
+| [`docs/dashboard_guide.md`](docs/dashboard_guide.md), [`powerbi/README.md`](powerbi/README.md) | The dashboard page-by-page and its DAX measures |
 | [`docs/archive/`](docs/archive) | Prior-phase planning docs, validation reports, and the earlier (v1) analysis code |
 
 ## Data source
