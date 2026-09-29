@@ -65,10 +65,10 @@ Every assumption below is documented so no future SQL, Python, DAX, or narrative
 
 ## Scope Assumptions
 
-### A9 — ML/predictive modeling is intentionally excluded
-- **Why it exists:** The project is positioned for Data Analyst (not Data Scientist/ML Engineer) roles; the brief's own scoring explicitly downgraded an ML-leaning idea for this reason.
-- **Risk introduced:** None to the analysis itself; the risk this assumption manages is *positioning* risk — including ML work could blur the target role fit.
-- **Validation method:** Statistical testing (ANOVA/correlation) is used for rigor instead of predictive modeling; documented explicitly in `README.md` and `INTERVIEW_PREPARATION.md` as a deliberate scope decision, not a capability gap.
+### A9 — Scope is descriptive and diagnostic analytics only
+- **Why it exists:** The project is positioned for Data Analyst roles; the brief's own scoring explicitly downgraded a broader-scoped idea for this reason.
+- **Risk introduced:** None to the analysis itself; the risk this assumption manages is *positioning* risk — a broader scope could blur the target role fit.
+- **Validation method:** Statistical testing (ANOVA/correlation) is used for rigor; documented explicitly in `README.md` and `INTERVIEW_PREPARATION.md` as a deliberate scope decision, not a capability gap.
 
 ## Statistical Assumptions
 

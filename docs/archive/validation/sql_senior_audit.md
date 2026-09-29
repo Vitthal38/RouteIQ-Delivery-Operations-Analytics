@@ -590,9 +590,8 @@ and is a better resume/interview story than a suspiciously flawless
 
 1. **Does this look like genuine Data Analyst SQL work?** Yes — the
    denominator reasoning, flag-based exclusion discipline, and
-   descriptive/inferential scope boundaries are not things a copy-pasted
-   or AI-generated-without-review portfolio typically gets this
-   consistently right.
+   descriptive/inferential scope boundaries are not things a copy-pasted,
+   unreviewed portfolio typically gets this consistently right.
 2. **Is the SQL depth above typical fresher level?** Yes. Window
    functions (`RANK`, `NTILE`, `LAG`, running `SUM() OVER`), correct
    `PERCENTILE_CONT` usage matched across a documented cross-tool

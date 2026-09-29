@@ -127,8 +127,8 @@ explanations that this correlation cannot rule out.
 
 **Limitation:** Attribute-level only — `DimAgent`/`Agent_Rating` reflects
 a rating attribute, not a trackable individual agent (no true `Agent_ID`
-exists in the source data). This result must never be read as "Agent X's
-rating predicts their delivery time."
+exists in the source data). This result must never be read as a claim about
+a specific agent's individual delivery times.
 
 ---
 

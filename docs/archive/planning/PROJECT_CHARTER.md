@@ -79,7 +79,7 @@ See `BUSINESS_REQUIREMENTS.md` for full stakeholder detail (pain points, decisio
 ## Business Constraints
 
 - **Data constraint:** Single static historical dataset (Kaggle, ~43.7K India-based delivery records); no live/streaming feed, no true SLA/promised-time field, no cost field.
-- **Tooling constraint:** PostgreSQL, Python, and Power BI only — no distributed compute (Spark/Snowflake) and no ML/predictive modeling, since the project is scoped as descriptive/diagnostic analytics, not prediction (see `ASSUMPTIONS.md`).
+- **Tooling constraint:** PostgreSQL, Python, and Power BI only — no distributed compute (Spark/Snowflake), since the project is scoped as descriptive/diagnostic analytics only (see `ASSUMPTIONS.md`).
 - **Time constraint:** Solo-analyst project completed on a fresher's timeline (~30–40 hours total).
 
 ## Risks
@@ -87,7 +87,7 @@ See `BUSINESS_REQUIREMENTS.md` for full stakeholder detail (pain points, decisio
 Full register in `RISK_REGISTER.md` (to be produced separately). Top charter-level risks:
 - **Circular SLA definition risk:** if the breach threshold is tuned after seeing breach-rate results, findings become self-fulfilling. Mitigated by freezing the rule before analysis (see Assumptions).
 - **Correlation-as-causation risk:** ANOVA/statistical significance shows association, not causal delay mechanism. Every insight must state this distinction explicitly.
-- **Small-field risk:** derived fields (distance, SLA threshold, breach flag) are only as good as their documented formulas — undocumented derivation is a hallucination risk for any future AI-assisted coding session.
+- **Small-field risk:** derived fields (distance, SLA threshold, breach flag) are only as good as their documented formulas — undocumented derivation is a risk for anyone extending this work later without the source formulas in hand.
 
 ## Assumptions
 
@@ -100,7 +100,7 @@ Full list with risk and validation method in `ASSUMPTIONS.md`. This charter assu
 
 ## Out of Scope
 
-- Predictive/ML modeling (delay forecasting, ETA prediction) — explicitly excluded to keep the project positioned as Data Analyst work, not Data Science/ML.
+- Delay forecasting or ETA estimation — explicitly excluded to keep the project positioned as Data Analyst work.
 - Real-time or streaming data pipelines.
 - Any cost or revenue figures not derivable from the dataset (no cost column exists; cost-to-serve is referenced as a stakeholder interest, not a calculated KPI, unless a documented proxy is defined in `ASSUMPTIONS.md`).
 - Cross-company or cross-dataset benchmarking (no external SLA benchmark is available).
