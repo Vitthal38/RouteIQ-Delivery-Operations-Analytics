@@ -115,7 +115,7 @@ def test_register(df: pd.DataFrame) -> pd.DataFrame:
         med = float(np.median(x) - np.median(y))
         rows.append({
             "id": tid, "business_question": question,
-            "method": "Mann-Whitney U; effects: mean difference (Welch 95% CI), median difference, Cohen's d (95% CI), AUC",
+            "method": "Mann-Whitney U; effects: mean difference (Welch 95% CI), median difference, Cohen's d (95% CI), probability of superiority",
             "why_this_test": "Rank-based test for skewed times; effect sizes tell the practical story.",
             "key_assumptions": "Independent observations; groups defined before looking at outcomes (except data-driven cuts, flagged).",
             "effect_size_name": "Cohen's d", "effect_size": dcoh,
